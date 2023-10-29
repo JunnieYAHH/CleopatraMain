@@ -22,10 +22,10 @@ exports.getProducts = async (req, res, next) => {
 }
 
 //Get Single Product  => /api/v1/product/:id
-exports.getSingleProduct = async (req,res,next) => {
+exports.getSingleProduct = async (req, res, next) => {
     const product = await Product.findById(req.params.id);
 
-    if(!product) {
+    if (!product) {
         return res.status(404).json({
             success: false,
             message: 'Product not found'
@@ -38,8 +38,11 @@ exports.getSingleProduct = async (req,res,next) => {
     })
 }
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 174c8ff911181f644ef49d429a3bf8d6adfe11a0
 //Update Product => /api/v1/product/:id
 exports.updateProduct = async (req, res, next) => {
     let product = await Product.findById(req.params.id);
@@ -60,6 +63,7 @@ exports.updateProduct = async (req, res, next) => {
         success: true,
         product
     })
+<<<<<<< HEAD
 }
 
 //Delete Product =>  /api/v1/admin/product/id
@@ -82,5 +86,7 @@ exports.deleteProduct = async (req, res, next) => {
         message: 'Product is deleted'
 
     })
+=======
+>>>>>>> 174c8ff911181f644ef49d429a3bf8d6adfe11a0
 
 }
