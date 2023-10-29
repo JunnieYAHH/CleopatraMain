@@ -1,7 +1,7 @@
 const Product = require('../models/products');
 
 
-//Create New Product  => /api/v1/product/creata
+//Create New Product  => /api/v1/product/create
 exports.createProduct = async (req, res) => {
     const product = await Product.create(req.body);
 
@@ -11,10 +11,12 @@ exports.createProduct = async (req, res) => {
     })
 };
 
-
-exports.getProducts = (req, res, next) => {
+//Create New Product  => /api/v1/product/
+exports.getProducts = async (req, res, next) => {
+    const products = await Product.find();
     res.status(200).json({
         success: true,
-        message: 'This route will show all products in database.'
+        count: products.length,
+        products
     })
 }
