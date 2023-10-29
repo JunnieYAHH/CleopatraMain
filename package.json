@@ -1,0 +1,23 @@
+{
+  "name": "cleopatura",
+  "version": "1.0.0",
+  "description": "full ecommerce site for jewelry",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node backend/server.js",
+    "dev": "SET NODE_ENV=DEVELOPMENT& nodemon backend/server",
+    "prod":"SET NODE_ENV=PRODUCTION& nodemon backend/server",
+    "seeder":"node backend/utils/seeder.js"
+  },
+  "author": "Cleopatra",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongoose": "^7.6.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

@@ -1,0 +1,133 @@
+[
+    {
+        "name": "Diamond Necklace",
+        "price": 499.99,
+        "description": "Elegant diamond necklace with a white gold chain.",
+        "ratings": 4.8,
+        "images": [
+            {
+                "public_id": "diamond_necklace",
+                "url": "example.com/diamond_necklace.jpg"
+            }
+        ],
+        "category": "Necklace",
+        "seller": "Luxury Jewelry Co.",
+        "stock": 50,
+        "numOfReviews": 15,
+        "reviews": []
+    },
+    {
+        "name": "Pearl Earrings",
+        "price": 79.99,
+        "description": "Classic pearl earrings with sterling silver hooks.",
+        "ratings": 4.6,
+        "images": [
+            {
+                "public_id": "pearl_earrings",
+                "url": "example.com/pearl_earrings.jpg"
+            }
+        ],
+        "category": "Earrings",
+        "seller": "Pearls & More",
+        "stock": 30,
+        "numOfReviews": 8,
+        "reviews": [
+            {
+                "name": "Customer3",
+                "rating": 4.0,
+                "comment": "Beautiful and timeless."
+            },
+            {
+                "name": "Customer4",
+                "rating": 5.0,
+                "comment": "I wear these every day!"
+            }
+        ]
+    },
+    {
+        "name": "Sapphire Ring",
+        "price": 199.99,
+        "description": "Stunning sapphire ring with a white gold band.",
+        "ratings": 4.9,
+        "images": [
+            {
+                "public_id": "sapphire_ring",
+                "url": "example.com/sapphire_ring.jpg"
+            }
+        ],
+        "category": "Rings",
+        "seller": "Gemstone Jewelers",
+        "stock": 25,
+        "numOfReviews": 12,
+        "reviews": [
+            {
+                "name": "Customer5",
+                "rating": 5.0,
+                "comment": "Exquisite craftsmanship!"
+            },
+            {
+                "name": "Customer6",
+                "rating": 4.8,
+                "comment": "I'm in love with this ring."
+            }
+        ]
+    },
+    {
+        "name": "Silver Bracelet",
+        "price": 69.99,
+        "description": "A stylish silver bracelet with intricate design.",
+        "ratings": 4.7,
+        "images": [
+            {
+                "public_id": "silver_bracelet",
+                "url": "example.com/silver_bracelet.jpg"
+            }
+        ],
+        "category": "Bracelets",
+        "seller": "Silver Creations",
+        "stock": 40,
+        "numOfReviews": 7,
+        "reviews": [
+            {
+                "name": "Customer7",
+                "rating": 4.5,
+                "comment": "Unique and eye-catching."
+            },
+            {
+                "name": "Customer8",
+                "rating": 4.6,
+                "comment": "Fits perfectly on my wrist."
+            }
+        ]
+    },
+    {
+        "name": "Classic Wristwatch",
+        "price": 149.99,
+        "description": "A classic wristwatch with a leather strap.",
+        "ratings": 4.4,
+        "images": [
+            {
+                "public_id": "wristwatch",
+                "url": "example.com/wristwatch.jpg"
+            }
+        ],
+        "category": "Watches",
+        "seller": "Timepiece Emporium",
+        "stock": 35,
+        "numOfReviews": 6,
+        "reviews": [
+            {
+                "name": "Customer9",
+                "rating": 4.2,
+                "comment": "Simple and elegant design."
+            },
+            {
+                "name": "Customer10",
+                "rating": 4.6,
+                "comment": "Keeps perfect time."
+            }
+        ]
+    }
+    
+    
+]
