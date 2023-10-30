@@ -38,6 +38,8 @@ exports.getSingleProduct = async (req, res, next) => {
     })
 }
 
+
+
 //Update Product => /api/v1/product/:id
 exports.updateProduct = async (req, res, next) => {
     let product = await Product.findById(req.params.id);
@@ -74,5 +76,5 @@ exports.deleteProduct = async (req, res, next) => {
         success: true,
         message: 'Product is Deleted.'
     })
-    
+
 }
