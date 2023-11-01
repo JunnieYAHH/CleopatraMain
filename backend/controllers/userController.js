@@ -26,7 +26,7 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
 
 })
 
-// Login User => /a[i/v1/login
+// Login User => /api/v1/login
 exports.loginUser = catchAsyncError(async (req, res, next) => {
     const { email, password } = req.body;
 
