@@ -122,6 +122,16 @@ exports.resetPassword = catchAsyncError(async (req, res, next) => {
     sendToken(user, 200, res)
 })
 
+//Get detail of current user => /api/v1/me
+exports.getUserProfile = catchAsyncError(async (req, res, next) => {
+    const user = await User.findById(req.user.id);
+
+    res.status(200).json({
+        success: true,
+        user
+    })
+}) 
+
 
 // Logout User => /api/v1/Logout
 exports.logout = catchAsyncError(async (req, res, next) => {
