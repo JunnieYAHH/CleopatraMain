@@ -49,7 +49,6 @@ module.exports = (err, req, res, next) => {
             error = new ErrorHandler(message, 400)
         }
 
-
         res.status(err.statusCode).json({
             success: false,
             error: error.message || 'Internal Server Error'
