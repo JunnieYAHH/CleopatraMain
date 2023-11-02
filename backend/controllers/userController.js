@@ -182,3 +182,65 @@ exports.logout = catchAsyncError(async (req, res, next) => {
         message: 'Logged Out'
     })
 })
+
+// Admin routes
+
+// Get all  users => /api/v1/admin/user
+exports.allUsers = catchAsyncError(async (req, res, next) => {
+    const users = await User.find();
+
+    res.status(200).json({
+        success: true,
+        users
+    })
+})
+
+// Get user details => /api/v1/admin/user/:id
+exports.getUserDetails = catchAsyncError(async (req, res, next) => {
+    const user = await User.findById(req.params.id);
+
+    if(!user){
+         return next(new ErrorHandler('User does not found with id:${req.params.id}'))
+    }
+
+    res.status(200).json({
+        sucess: true,
+        user: user
+    })
+})
+
+//Update Current User Profile => /api/v1/admin/user/:id
+exports.updateUser = catchAsyncError(async (req, res, next) => {
+    const newUserData = {
+        name: req.body.name,
+        email: req.body.email,
+        role: req.body.role
+    }
+
+    const user = await User.findByIdAndUpdate(req.params.id, newUserData, {
+        new: true,
+        runValidators: true,
+        useFindAndModify: false
+    })
+
+    res.status(200).json({
+        success: true
+    })
+
+})
+
+// Delete user  => /api/v1/admin/user/:id
+exports.deleteUser = catchAsyncError(async (req, res, next) => {
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+        return next(new ErrorHandler(`User not found with id: ${req.params.id}`));
+    }
+
+    // Use remove on the user instance
+    await user.remove();
+
+    res.status(200).json({
+        success: true,
+    });
+});
