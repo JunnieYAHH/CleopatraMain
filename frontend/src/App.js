@@ -1,8 +1,7 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-
-import Header from './components/layout/Header'
-import Footer from './components/layout/Footer'
-import Home from './components/layout/Home'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Header from './components/layouts/Header';
+import Footer from './components/layouts/Footer';
+import Home from './components/layouts/Home';
 
 function App() {
   return (
@@ -11,7 +10,7 @@ function App() {
         <Header />
         <div className="container container-fluid">
           <Routes>
-            <Route path="/" component={Home} exact />
+            <Route path="/" element={<Home />} />
           </Routes>
         </div>
         <Footer />
