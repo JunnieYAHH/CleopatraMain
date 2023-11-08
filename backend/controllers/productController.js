@@ -20,7 +20,7 @@ exports.createProduct = catchAsyncErrors(async (req, res) => {
 //Get all Products  => /api/v1/products?keyword=apple
 exports.getProducts = catchAsyncErrors(async (req, res, next) => {
 
-    const resPerPage = 4;
+    const resPerPage = 8;
     const productCount = await Product.countDocuments();
 
     const apiFeatures = new APIFeatures(Product.find(), req.query)
@@ -30,10 +30,12 @@ exports.getProducts = catchAsyncErrors(async (req, res, next) => {
 
     const products = await apiFeatures.query;
 
-    res.status(200).json({
-        success: true,
-        productCount,
-        products
+    setTimeout(()=>{
+        res.status(200).json({
+            success: true,
+            productCount,
+            products
+        })
     })
 })
 
