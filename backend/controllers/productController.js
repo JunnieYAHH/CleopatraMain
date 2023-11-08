@@ -19,7 +19,7 @@ exports.createProduct = catchAsyncErrors(async (req, res) => {
 
 //Get all Products  => /api/v1/products?keyword=apple
 exports.getProducts = catchAsyncErrors(async (req, res, next) => {
-
+    //Toastify Sample
     // return next(new ErrorHandler('My Error', 400)); // This will stop the execution
 
     const resPerPage = 8;
