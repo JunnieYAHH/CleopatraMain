@@ -24,6 +24,7 @@ export const getProducts = () => async (dispatch) => {
             type: ALL_PRODUCTS_FAIL,
             payload: error.response.data.message
         })
+        return Promise.reject(error);
     }
 }
 
