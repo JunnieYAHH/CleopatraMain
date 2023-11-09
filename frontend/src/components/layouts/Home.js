@@ -26,7 +26,7 @@ const Home = () => {
         dispatch(getProducts())
             .then(() => {
                 // errMsg('An error occurred while fetching products');
-                successMsg('Products fetched successfully');
+                successMsg(null);
             })
             .catch((error) => {
                 // successMsg('Products fetched successfully');

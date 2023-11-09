@@ -7,7 +7,9 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Header />
+        <div className="container">
+          <Header />
+        </div>
         <div className="container container-fluid">
           <Routes>
             <Route path="/" element={<Home />} />
