@@ -1,0 +1,92 @@
+/* Product Details Page Styles */
+.product-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.product-container:hover {
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+}
+
+.product-image {
+    flex: 0 0 45%;
+}
+
+.product-details {
+    flex: 0 0 50%;
+}
+
+/* ... (rest of the styles remain the same) */
+
+.submit-review-btn {
+    margin-top: 20px;
+    background-color: #e74c3c;
+    border-color: #e74c3c;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.submit-review-btn:hover {
+    background-color: #c0392b;
+    border-color: #c0392b;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .product-container {
+        flex-direction: column;
+    }
+
+    .product-image,
+    .product-details {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+}
+
+/* Add these styles to your CSS file or style block */
+/* Add these styles to your CSS file or style block */
+
+#product_image {
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .carousel-inner {
+    border-radius: 15px;
+    overflow: hidden;
+  }
+  
+  .carousel-item {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .carousel-item img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .carousel-item img:hover {
+    transform: scale(1.1);
+  }
+  
+  .singleProduct {
+    border: 2px solid #ddd; /* Border color */
+    border-radius: 10px; /* Border radius for rounded corners */
+    background-color: #fff; /* Background color */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle lift effect */
+    padding: 20px; /* Padding for inner content */
+    margin-bottom: 20px; /* Margin between individual products */
+  }
+
+  
