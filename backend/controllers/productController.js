@@ -22,7 +22,7 @@ exports.getProducts = catchAsyncErrors(async (req, res, next) => {
     //Toastify Sample
     // return next(new ErrorHandler('My Error', 400)); // This will stop the execution
 
-    const resPerPage = 8;
+    const resPerPage = 4;
     const productCount = await Product.countDocuments();
 
     const apiFeatures = new APIFeatures(Product.find(), req.query)
@@ -36,6 +36,7 @@ exports.getProducts = catchAsyncErrors(async (req, res, next) => {
         res.status(200).json({
             success: true,
             productCount,
+            resPerPage,
             products
         });
     });

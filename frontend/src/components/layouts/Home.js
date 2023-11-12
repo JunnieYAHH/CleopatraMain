@@ -1,4 +1,5 @@
-import React, { Fragment, useEffect } from 'react'
+import React, { Fragment,useState ,useEffect } from 'react'
+import Pagination  from 'react-js-pagination'
 
 import MetaData from '../layouts/MetaData'
 import Product from '../products/Product'
@@ -10,9 +11,13 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Home = () => {
+
+    const[currentPage, setCurrentPage] = useState(1)
+
+
     const dispatch = useDispatch();
 
-    const { loading, products, error, productCount } = useSelector(state => state.products)
+    const { loading, products, error, productCount,resPerpage  } = useSelector(state => state.products)
 
     // Toast functions
     const errMsg = (message = '') => toast.error(message, {
@@ -23,7 +28,7 @@ const Home = () => {
     });
 
     useEffect(() => {
-        dispatch(getProducts())
+        dispatch(getProducts(currentPage))
             .then(() => {
                 // errMsg('An error occurred while fetching products');
                 successMsg(null);
@@ -33,6 +38,10 @@ const Home = () => {
                 errMsg('An error occurred while fetching products');
             });
     }, [dispatch]);
+
+    function setCurrentPageNo(pageNumber){
+        setCurrentPage(pageNumber)
+    }
 
     return (
         <Fragment>
@@ -47,6 +56,27 @@ const Home = () => {
                             ))}
                         </div>
                     </section>
+
+                {resPerpage <= productCount && (
+                    <div className="d-flex justify-content-center mt-5">
+                         <Pagination
+                           activePage={currentPage}
+                           itemsCountPerPage={resPerpage}
+                           totalItemsCount={productCount}
+                           onChange={setCurrentPageNo} 
+                           nextPageText={'Next'}
+                           prevPageText={'Prev'}
+                           firstPageText={'First'}
+                           lastPageText={'Last'}
+                           itemClass="page-item"
+                           linkClass="page-link"
+                        />   
+                 </div>
+                )}    
+                
+
+
+
                 </Fragment>
             )},
             <ToastContainer position="bottom-center" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
