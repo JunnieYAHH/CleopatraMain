@@ -10,7 +10,7 @@ import { getProducts } from '../../actions/productActions'
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const Home = () => {
+const Home = ({ match }) => {
 
     const[currentPage, setCurrentPage] = useState(1)
 
@@ -18,6 +18,9 @@ const Home = () => {
     const dispatch = useDispatch();
 
     const { loading, products, error, productCount,resPerpage  } = useSelector(state => state.products)
+
+    const keyword = match?.params?.keyword || '';
+
 
     // Toast functions
     const errMsg = (message = '') => toast.error(message, {
@@ -28,7 +31,7 @@ const Home = () => {
     });
 
     useEffect(() => {
-        dispatch(getProducts(currentPage))
+        dispatch(getProducts(keyword, currentPage))
             .then(() => {
                 // errMsg('An error occurred while fetching products');
                 successMsg(null);
@@ -37,7 +40,7 @@ const Home = () => {
                 // successMsg('Products fetched successfully');
                 errMsg('An error occurred while fetching products');
             });
-    }, [dispatch]);
+    }, [dispatch, keyword, currentPage]);
 
     function setCurrentPageNo(pageNumber){
         setCurrentPage(pageNumber)
@@ -56,8 +59,7 @@ const Home = () => {
                             ))}
                         </div>
                     </section>
-
-                {resPerpage <= productCount && (
+                
                     <div className="d-flex justify-content-center mt-5">
                          <Pagination
                            activePage={currentPage}
@@ -72,11 +74,7 @@ const Home = () => {
                            linkClass="page-link"
                         />   
                  </div>
-                )}    
-                
-
-
-
+                   
                 </Fragment>
             )},
             <ToastContainer position="bottom-center" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />

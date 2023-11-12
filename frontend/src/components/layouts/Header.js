@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react'
-
+import { Route, Routes } from 'react-router-dom'
+import Search from './Search'
 import '../../App.css'
 
 const Header = () => {
@@ -10,6 +11,9 @@ const Header = () => {
           <a className="navbar-brand" href="/">
             <img src="./images/logo.png" alt="Logo" />
           </a>
+         <Routes>
+         <Route render={({ history }) => <Search history={history} /> } />
+         </Routes>
           <form className="d-flex">
             <input
               className="form-control me-2"
