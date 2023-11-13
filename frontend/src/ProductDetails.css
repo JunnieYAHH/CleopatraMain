@@ -81,12 +81,12 @@
   }
   
   .singleProduct {
-    border: 2px solid #ddd; /* Border color */
-    border-radius: 10px; /* Border radius for rounded corners */
-    background-color: #fff; /* Background color */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle lift effect */
-    padding: 20px; /* Padding for inner content */
-    margin-bottom: 20px; /* Margin between individual products */
+    border: 2px solid #ddd; 
+    border-radius: 10px;
+    background-color: #fff; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    padding: 20px; 
+    margin-bottom: 20px; 
   }
 
   

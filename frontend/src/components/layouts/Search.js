@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 const Search = ({history}) => {
 
-   const[keyword, setkeyword] = useState('');
+   const[keyword, setKeyword] = useState('');
 
    const searchHandler = (e) => {
     e.preventDefault()
@@ -22,7 +22,7 @@ const Search = ({history}) => {
           id="search_field"
           className="form-control"
           placeholder="Enter Product Name ..."
-          onChange={(e) => setkeyword(e.target.value)}
+          onChange={(e) => setKeyword(e.target.value)}
         />
         <div className="input-group-append">
            <button id="search_btn" className="btn">

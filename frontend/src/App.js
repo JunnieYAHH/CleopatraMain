@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/layouts/Header';
 import Footer from './components/layouts/Footer';
 import Home from './components/layouts/Home';
+import Search from './components/layouts/Search';
 import ProductDetails from './components/products/productDetails';
 
 function App() {
@@ -14,7 +15,7 @@ function App() {
         <div className="container container-fluid">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/search/:keyword" element={<Home />} />
+            <Route path="/search/:keyword" element={<Search />} />
             <Route path="/product/:id" element={<ProductDetails />} />
           </Routes>
         </div>

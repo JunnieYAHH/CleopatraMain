@@ -1,5 +1,7 @@
-import React, { Fragment,useState ,useEffect } from 'react'
-import Pagination  from 'react-js-pagination'
+import React, { Fragment, useState, useEffect } from 'react'
+import Pagination from 'react-js-pagination'
+import { useParams } from 'react-router-dom';
+
 
 import MetaData from '../layouts/MetaData'
 import Product from '../products/Product'
@@ -12,14 +14,14 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Home = ({ match }) => {
 
-    const[currentPage, setCurrentPage] = useState(1)
+    const [currentPage, setCurrentPage] = useState(1)
 
 
     const dispatch = useDispatch();
 
-    const { loading, products, error, productCount,resPerpage  } = useSelector(state => state.products)
+    const { loading, products, productCount, resPerPage } = useSelector(state => state.products)
 
-    const keyword = match?.params?.keyword || '';
+    const { keyword } = useParams();
 
 
     // Toast functions
@@ -31,18 +33,17 @@ const Home = ({ match }) => {
     });
 
     useEffect(() => {
+        console.log("Fetch Keywords:",keyword)
         dispatch(getProducts(keyword, currentPage))
             .then(() => {
-                // errMsg('An error occurred while fetching products');
                 successMsg(null);
             })
             .catch((error) => {
-                // successMsg('Products fetched successfully');
                 errMsg('An error occurred while fetching products');
             });
     }, [dispatch, keyword, currentPage]);
 
-    function setCurrentPageNo(pageNumber){
+    function setCurrentPageNo(pageNumber) {
         setCurrentPage(pageNumber)
     }
 
@@ -59,22 +60,22 @@ const Home = ({ match }) => {
                             ))}
                         </div>
                     </section>
-                
+
                     <div className="d-flex justify-content-center mt-5">
-                         <Pagination
-                           activePage={currentPage}
-                           itemsCountPerPage={resPerpage}
-                           totalItemsCount={productCount}
-                           onChange={setCurrentPageNo} 
-                           nextPageText={'Next'}
-                           prevPageText={'Prev'}
-                           firstPageText={'First'}
-                           lastPageText={'Last'}
-                           itemClass="page-item"
-                           linkClass="page-link"
-                        />   
-                 </div>
-                   
+                        <Pagination
+                            activePage={currentPage}
+                            itemsCountPerPage={resPerPage}
+                            totalItemsCount={productCount}
+                            onChange={setCurrentPageNo}
+                            nextPageText={'Next'}
+                            prevPageText={'Prev'}
+                            firstPageText={'First'}
+                            lastPageText={'Last'}
+                            itemClass="page-item"
+                            linkClass="page-link"
+                        />
+                    </div>
+
                 </Fragment>
             )},
             <ToastContainer position="bottom-center" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
