@@ -63,7 +63,8 @@ const ProductDetails = () => {
                 <Loader />
                 : (
                     <Fragment>
-                        <MetaData title={product.name} />
+                        {product &&
+                            <MetaData title={product.name} />}
                         {product &&
                             <div className="row f-flex justify-content-around singleProduct">
                                 <div className="col-12 col-lg-5 img-fluid" id="product_image">
@@ -104,7 +105,7 @@ const ProductDetails = () => {
 
                                     <hr />
 
-                                    <p>Status: <span id="stock_status" className={product.stock > 0 ? 'greenColor': 'redColor'} > {product.stock > 0 ? 'In Stock' : 'Out of Stock'}</span></p>
+                                    <p>Status: <span id="stock_status" className={product.stock > 0 ? 'greenColor' : 'redColor'} > {product.stock > 0 ? 'In Stock' : 'Out of Stock'}</span></p>
 
                                     <hr />
 
