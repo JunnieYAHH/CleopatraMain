@@ -11,6 +11,7 @@ import {
     CLEAR_ERRORS
 } from '../constants/productConstants';
 
+
 export const getProducts = (keyword = '',currentPage = 1) => async (dispatch) => {
     try {
         dispatch({ type: ALL_PRODUCTS_REQUEST });
