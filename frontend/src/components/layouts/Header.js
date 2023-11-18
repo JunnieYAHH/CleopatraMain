@@ -1,4 +1,6 @@
 import React, { Fragment } from 'react'
+import { Route, Link } from 'react-router-dom'
+
 import Search from './Search'
 import '../../App.css'
 
@@ -8,9 +10,11 @@ const Header = () => {
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container">
           <a className="navbar-brand" href="/">
-            <img src="./images/logo.png" alt="Logo" />
+            <Link to="/">
+              <img src="./images/logo.png" alt="Logo" />
+            </Link>
           </a>
-          <Search  />
+          <Search />
           <div className="d-flex align-items-center">
             <button className="btn btn-primary ms-3" id="login_btn">
               Login
