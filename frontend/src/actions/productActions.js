@@ -12,12 +12,17 @@ import {
 } from '../constants/productConstants';
 
 
-export const getProducts = (keyword = '',currentPage = 1, price) => async (dispatch) => {
+export const getProducts = (keyword = '', currentPage = 1, price, category) => async (dispatch) => {
     try {
         dispatch({ type: ALL_PRODUCTS_REQUEST });
 
         let link = `${process.env.REACT_APP_API}/api/v1/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price
         [1]}&price[gte]=${price[0]}`
+
+        if (category) {
+            link = `${process.env.REACT_APP_API}/api/v1/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price
+            [1]}&price[gte]=${price[0]}&category=${category}`;
+        }
 
         const { data } = await axios.get(link);
 
@@ -60,4 +65,3 @@ export const clearErrors = () => async (dispatch) => {
         type: CLEAR_ERRORS
     });
 };
-    

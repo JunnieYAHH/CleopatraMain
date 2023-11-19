@@ -20,11 +20,20 @@ const Home = ({ match }) => {
 
     const [currentPage, setCurrentPage] = useState(1)
     const [price, setPrice] = useState([1, 1000])
+    const [category, setCategory] = useState('')
 
+    const categories = [
+        'Necklace',
+        'Earrings',
+        'Rings',
+        'Bracelets',
+        'Watches',
+        'Brooches'
+    ]
 
     const dispatch = useDispatch();
 
-    const { loading, products, productCount, resPerPage } = useSelector(state => state.products)
+    const { loading, products, productCount, resPerPage, filteredProductsCount } = useSelector(state => state.products)
 
     const { keyword } = useParams();
 
@@ -39,17 +48,22 @@ const Home = ({ match }) => {
 
     useEffect(() => {
         console.log("Fetch Keywords:", keyword)
-        dispatch(getProducts(keyword, currentPage, price))
+        dispatch(getProducts(keyword, currentPage, price, category))
             .then(() => {
                 successMsg(null);
             })
             .catch((error) => {
                 errMsg('An error occurred while fetching products');
             });
-    }, [dispatch, keyword, currentPage, price]);
+    }, [dispatch, keyword, currentPage, price, category]);
 
     function setCurrentPageNo(pageNumber) {
         setCurrentPage(pageNumber)
+    }
+
+    let count = productCount;
+    if (keyword) {
+        count = filteredProductsCount
     }
 
     return (
@@ -67,8 +81,8 @@ const Home = ({ match }) => {
                                         <div className="px-5">
                                             <Range
                                                 marks={{
-                                                    1 : `$1`,
-                                                    1000 : `$1000`
+                                                    1: `$1`,
+                                                    1000: `$1000`
                                                 }}
                                                 min={1}
                                                 max={1000}
@@ -81,12 +95,35 @@ const Home = ({ match }) => {
                                                 value={price}
                                                 onChange={price => setPrice(price)}
                                             />
+
+                                            <hr className="my-5" />
+                                            <div className="mt-5">
+                                                <h4 className="mb-3">
+                                                    Categories
+                                                </h4>
+
+                                                <ul className='pl-0'>
+                                                    {categories.map(category => (
+                                                        <li
+                                                            style={{
+                                                                cursor: 'pointer',
+                                                                listStyleType: 'none'
+                                                            }}
+                                                            key={category}
+                                                            onClick={() => setCategory(category)
+                                                            }
+                                                        >
+                                                            {category}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
 
                                     <div className="col-6 col-md-9">
                                         <div className="row">
-                                            {products.map(product => (
+                                            {products && products.map(product => (
                                                 <Product key={product._id} product={product}
                                                     col={4} />
                                             ))}
@@ -94,7 +131,7 @@ const Home = ({ match }) => {
                                     </div>
                                 </Fragment>
                             ) : (
-                                products.map(product => (
+                                products && products.map(product => (
                                     <Product key={product._id} product={product} col={3} />
                                 ))
                             )}
@@ -103,20 +140,22 @@ const Home = ({ match }) => {
                         </div>
                     </section>
 
-                    <div className="d-flex justify-content-center mt-5">
-                        <Pagination
-                            activePage={currentPage}
-                            itemsCountPerPage={resPerPage}
-                            totalItemsCount={productCount}
-                            onChange={setCurrentPageNo}
-                            nextPageText={'Next'}
-                            prevPageText={'Prev'}
-                            firstPageText={'First'}
-                            lastPageText={'Last'}
-                            itemClass="page-item"
-                            linkClass="page-link"
-                        />
-                    </div>
+                        {resPerPage <= count && (
+                        <div className="d-flex justify-content-center mt-5">
+                            <Pagination
+                                activePage={currentPage}
+                                itemsCountPerPage={resPerPage}
+                                totalItemsCount={productCount}
+                                onChange={setCurrentPageNo}
+                                nextPageText={'Next'}
+                                prevPageText={'Prev'}
+                                firstPageText={'First'}
+                                lastPageText={'Last'}
+                                itemClass="page-item"
+                                linkClass="page-link"
+                            />
+                        </div>
+                        )}
 
                 </Fragment>
             )},
