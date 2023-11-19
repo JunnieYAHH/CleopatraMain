@@ -21,6 +21,7 @@ const Home = ({ match }) => {
     const [currentPage, setCurrentPage] = useState(1)
     const [price, setPrice] = useState([1, 1000])
     const [category, setCategory] = useState('')
+    const [rating, setRating] = useState(0)
 
     const categories = [
         'Necklace',
@@ -48,14 +49,14 @@ const Home = ({ match }) => {
 
     useEffect(() => {
         console.log("Fetch Keywords:", keyword)
-        dispatch(getProducts(keyword, currentPage, price, category))
+        dispatch(getProducts(keyword, currentPage, price, category, rating))
             .then(() => {
                 successMsg(null);
             })
             .catch((error) => {
                 errMsg('An error occurred while fetching products');
             });
-    }, [dispatch, keyword, currentPage, price, category]);
+    }, [dispatch, keyword, currentPage, price, category, rating]);
 
     function setCurrentPageNo(pageNumber) {
         setCurrentPage(pageNumber)
@@ -118,6 +119,34 @@ const Home = ({ match }) => {
                                                     ))}
                                                 </ul>
                                             </div>
+
+                                            <hr className="my-3" />
+                                            <div className="mt-5">
+                                                <h4 className="mb-3">
+                                                    Ratings
+                                                </h4>
+
+                                                <ul className='pl-0'>
+                                                    {[5, 4, 3, 2, 1].map(star => (
+                                                        <li
+                                                            style={{
+                                                                cursor: 'pointer',
+                                                                listStyleType: 'none'
+                                                            }}
+                                                            key={star}
+                                                            onClick={() => setRating(star)
+                                                            }
+                                                        >
+                                                            <div className='rating-outer'>
+                                                                <div className='rating-inner' 
+                                                                    style={{ width: `${star * 20}%` }}>
+                                                                </div>
+                                                            </div>
+                                                            {star} Star
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -140,7 +169,7 @@ const Home = ({ match }) => {
                         </div>
                     </section>
 
-                        {resPerPage <= count && (
+                    {resPerPage <= count && (
                         <div className="d-flex justify-content-center mt-5">
                             <Pagination
                                 activePage={currentPage}
@@ -155,7 +184,7 @@ const Home = ({ match }) => {
                                 linkClass="page-link"
                             />
                         </div>
-                        )}
+                    )}
 
                 </Fragment>
             )},
