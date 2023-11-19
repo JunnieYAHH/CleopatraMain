@@ -48,7 +48,6 @@ const Home = ({ match }) => {
     });
 
     useEffect(() => {
-        console.log("Fetch Keywords:", keyword)
         dispatch(getProducts(keyword, currentPage, price, category, rating))
             .then(() => {
                 successMsg(null);

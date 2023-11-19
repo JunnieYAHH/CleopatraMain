@@ -2,8 +2,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/layouts/Header';
 import Footer from './components/layouts/Footer';
 import Home from './components/layouts/Home';
-import Search from './components/layouts/Search';
 import ProductDetails from './components/products/productDetails';
+import Login from './components/user/Login';
 
 function App() {
   return (
@@ -16,7 +16,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/search/:keyword" element={<Home />} />
-            <Route path="/product/:id" element={<ProductDetails />} />
+            <Route path="/product/:id" element={<ProductDetails />} exact/>
+            <Route path="/login" element={<Login />} />
           </Routes>
         </div>
         <Footer />
