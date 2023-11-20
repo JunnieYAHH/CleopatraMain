@@ -24,7 +24,7 @@ const Header = () => {
         <div className="container">
           <a className="navbar-brand" href="/">
             <Link to="/">
-              <img src="./images/logo.png" alt="Logo" />
+              <img src="./images/CleopatraLogo.png" alt="Logo"  style={{ width: '150px', height: '75px',  borderRadius: '25%' }} />
             </Link>
           </a>
           <Search />
@@ -36,7 +36,7 @@ const Header = () => {
                   <span className="ms-1" id="cart_count">2</span>
                 </Link>
                 <div className='ml-4 dropdown d-inline'>
-                  <Link to="!#" className="btn dropdown-toggle text-black"
+                  <Link to="#!" className="btn dropdown-toggle text-black"
                     type="button" id="dropDownMenuButton" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
                     <figure className="avatar avatar-nav">
@@ -44,10 +44,20 @@ const Header = () => {
                     </figure>
                     <span>{user && user.name}</span>
                   </Link>
+                  <div className="dropdown-menu" aria-labelledby="dropDownMenuButton">
+                    {user && user.role !== 'admin' ? (
+                      <Link className="dropdown-item" to="/orders/me">Orders</Link>
+                    ) : (
+                      <Link className="dropdown-item" to="/dashboard">Dashboard</Link>
+                    )}
+                    <Link to="/" className="dropdown-item">
+                      Profile
+                    </Link>
+                    <Link to="/login" className="dropdown-item" onClick={logoutHandler}>
+                      Logout
+                    </Link>
+                  </div>
                 </div>
-                <button to="/login" className="btn btn-primary ms-3" id="login_btn" onClick={logoutHandler}>
-                  Logout
-                </button>
               </Fragment>
               :
               <Link to="/login" className="btn btn-primary ms-3" id="login_btn">
