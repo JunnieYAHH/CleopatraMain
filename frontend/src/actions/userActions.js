@@ -55,6 +55,8 @@ export const register = (userData) => async (dispatch) => {
 
         const { data } = await axios.post(`${process.env.REACT_APP_API}/api/v1/register`, userData, config)
 
+        console.log(data);
+
         dispatch({
             type: REGISTER_USER_SUCCESS,
             payload: data.user
@@ -98,7 +100,7 @@ export const loadUser = () => async (dispatch) => {
             payload: error.response.data.message
         })
     }
-    
+
 }
 
 

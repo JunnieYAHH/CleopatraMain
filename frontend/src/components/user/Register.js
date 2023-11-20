@@ -42,7 +42,7 @@ const Register = () => {
             dispatch(clearErrors());
         }
 
-    }, [dispatch, isAuthenticated, error])
+    }, [dispatch, navigate,  isAuthenticated, error])
 
     const submitHandler = (e) => {
         e.preventDefault();
