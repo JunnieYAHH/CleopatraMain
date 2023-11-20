@@ -37,9 +37,9 @@ const Login = () => {
             dispatch(clearErrors());
         }
 
-    }, [dispatch, alert, isAuthenticated, error])
+    }, [dispatch, isAuthenticated, error])
 
-    const submitHandler =(e) => {
+    const submitHandler = (e) => {
         e.preventDefault();
         dispatch(login(email, password))
     }
@@ -47,6 +47,7 @@ const Login = () => {
 
     return (
         <Fragment>
+            <ToastContainer />
             {loading ? <Loader /> : (
                 <Fragment>
                     <MetaData title={'Login'} />
@@ -70,7 +71,7 @@ const Login = () => {
                                     LOGIN
                                 </button>
 
-                                <Link to="/" className="float-right mt-3">New User?</Link>
+                                <Link to="/register" className="float-right mt-3">New User?</Link>
                             </form>
                         </div>
                     </div>
