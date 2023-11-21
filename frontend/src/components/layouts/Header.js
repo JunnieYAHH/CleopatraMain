@@ -50,7 +50,7 @@ const Header = () => {
                     ) : (
                       <Link className="dropdown-item" to="/dashboard">Dashboard</Link>
                     )}
-                    <Link to="/" className="dropdown-item">
+                    <Link to="/me" className="dropdown-item">
                       Profile
                     </Link>
                     <Link to="/login" className="dropdown-item" onClick={logoutHandler}>
