@@ -36,7 +36,7 @@ const Header = () => {
                   <span className="ms-1" id="cart_count">2</span>
                 </Link>
                 <div className='ml-4 dropdown d-inline'>
-                  <Link to="#!" className="btn dropdown-toggle text-black"
+                  <Link to="#!" className="btn dropdown-toggle text-black mr-3"
                     type="button" id="dropDownMenuButton" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
                     <figure className="avatar avatar-nav">
