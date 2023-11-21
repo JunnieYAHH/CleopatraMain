@@ -32,6 +32,7 @@ export const login = (email, password) => async (dispatch) => {
         })
 
         localStorage.setItem('token', data.token);
+        localStorage.setItem('loading', data.loading);
         localStorage.setItem('user', JSON.stringify(data.user));
 
     } catch (error) {
@@ -81,7 +82,7 @@ export const loadUser = () => async (dispatch) => {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
-                'User': `Bearer ${user}`,
+                'User': `Bearer ${user}`
             },
         };
 
