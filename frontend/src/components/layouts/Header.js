@@ -24,7 +24,7 @@ const Header = () => {
         <div className="container">
           <a className="navbar-brand" href="/">
             <Link to="/">
-              <img src="./images/CleopatraLogo.png" alt="Logo"  style={{ width: '150px', height: '75px',  borderRadius: '25%' }} />
+              <img src="../../images/CleopatraLogo.png" alt="Logo"  style={{ width: '150px', height: '75px',  borderRadius: '25%' }} />
             </Link>
           </a>
           <Search />

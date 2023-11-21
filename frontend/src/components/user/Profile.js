@@ -1,14 +1,13 @@
 import React, { Fragment } from 'react'
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+// import { useSelector } from 'react-redux'
 
-import Loader from '../layouts/Loader'
+// import Loader from '../layouts/Loader'
 import MetaData from '../layouts/MetaData'
 
 
 const Profile = () => {
 
-    const token = localStorage.getItem('token');
     const user = JSON.parse(localStorage.getItem('user'));
 
     return (
@@ -18,8 +17,9 @@ const Profile = () => {
             <h2 className="mt-5 ml-5">My Profile</h2>
             <div className="row justify-content-around mt-5 user-info">
                 <div className="col-12 col-md-3">
+                    
                     <figure className='avatar avatar-profile'>
-                        <img className="rounded-circle img-fluid" src={user.avatar.url} alt={user.name} />
+                        <img className="rounded-circle img-fluid" src={user.avatar && user.avatar.url} alt={user.name} />
                     </figure>
                     <Link to="/me/update" id="edit_profile" className="btn btn-primary btn-block my-5">
                         Edit Profile

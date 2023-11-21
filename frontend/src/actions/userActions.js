@@ -9,6 +9,10 @@ import {
     LOAD_USER_REQUEST,
     LOAD_USER_SUCCESS,
     LOAD_USER_FAIL,
+    UPDATE_PROFILE_REQUEST,
+    UPDATE_PROFILE_SUCCESS,
+    // UPDATE_PROFILE_RESET,
+    UPDATE_PROFILE_FAIL,
     CLEAR_ERRORS
 } from '../constants/userConstants'
 
@@ -32,7 +36,6 @@ export const login = (email, password) => async (dispatch) => {
         })
 
         localStorage.setItem('token', data.token);
-        localStorage.setItem('loading', data.loading);
         localStorage.setItem('user', JSON.stringify(data.user));
 
     } catch (error) {
@@ -103,6 +106,54 @@ export const loadUser = () => async (dispatch) => {
     }
 
 }
+
+// UPDATE USER
+export const updateProfile = (userData, token) => async (dispatch) => {
+    try {
+        dispatch({ type: UPDATE_PROFILE_REQUEST });
+        const token = localStorage.getItem('token');
+
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${token}`,
+            },
+        };
+
+        const { data } = await axios.put(
+            `${process.env.REACT_APP_API}/api/v1/me/update`,
+            userData,
+            config
+        );
+
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+
+        dispatch({
+            type: UPDATE_PROFILE_SUCCESS,
+            payload: data.success,
+        });
+
+        //   const user = JSON.parse(localStorage.getItem('user'));
+        //   if (user) {
+        //     localStorage.setItem(
+        //       'user',
+        //       JSON.stringify({
+        //         ...user,
+        //         name: data.success.name,
+        //         email: data.success.email,
+        //         avatar: data.success.avatar,
+        //       })
+        //     );
+        //   }
+
+    } catch (error) {
+        dispatch({
+            type: UPDATE_PROFILE_FAIL,
+            payload: error.response.data.message,
+        });
+    }
+};
 
 
 // Clear Errors

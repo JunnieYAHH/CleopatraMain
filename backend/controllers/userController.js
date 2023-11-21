@@ -170,9 +170,11 @@ exports.updateProfile = catchAsyncError(async (req, res, next) => {
         useFindAndModify: false
     })
 
-    res.status(200).json({
-        success: true
-    })
+    // res.status(200).json({
+    //     success: true
+    // })
+
+    sendToken(user, 200, res)
 
 })
 

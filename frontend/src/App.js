@@ -7,6 +7,8 @@ import ProductDetails from './components/products/productDetails';
 import Login from './components/user/Login';
 import Register from './components/user/Register';
 import Profile from './components/user/Profile';
+import UpdateProfile from './components/user/updateProfile';
+
 import ProtectedRoute from './components/route/ProtectedRoute';
 
 import { loadUser } from './actions/userActions';
@@ -32,6 +34,7 @@ function App() {
                         <Route path="/register" element={<Register />} />
                         {/* Route for /me, using ProtectedRoute */}
                         <Route path="/me" element={<ProtectedRoute element={Profile} />} />
+                        <Route path="/me/update" element={<ProtectedRoute element={UpdateProfile} />} />
                     </Routes>
                 </div>
                 <Footer />
