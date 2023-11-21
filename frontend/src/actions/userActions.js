@@ -108,7 +108,7 @@ export const loadUser = () => async (dispatch) => {
 }
 
 // UPDATE USER
-export const updateProfile = (userData, token) => async (dispatch) => {
+export const updateProfile = (userData) => async (dispatch) => {
     try {
         dispatch({ type: UPDATE_PROFILE_REQUEST });
         const token = localStorage.getItem('token');
@@ -134,18 +134,6 @@ export const updateProfile = (userData, token) => async (dispatch) => {
             payload: data.success,
         });
 
-        //   const user = JSON.parse(localStorage.getItem('user'));
-        //   if (user) {
-        //     localStorage.setItem(
-        //       'user',
-        //       JSON.stringify({
-        //         ...user,
-        //         name: data.success.name,
-        //         email: data.success.email,
-        //         avatar: data.success.avatar,
-        //       })
-        //     );
-        //   }
 
     } catch (error) {
         dispatch({
