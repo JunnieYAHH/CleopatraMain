@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import Search from './Search'
@@ -10,6 +11,8 @@ const Header = () => {
 
   const token = localStorage.getItem('token');
   const user = JSON.parse(localStorage.getItem('user'));
+  const { cartItems } = useSelector(state => state.cart)
+
 
   const logoutHandler = () => {
     localStorage.removeItem('token', token);
@@ -33,7 +36,7 @@ const Header = () => {
               <Fragment>
                 <Link to="/cart" style={{ textDecoration: 'none' }}>
                   <span id="cart" className="ml-3">  <i className="fa-solid fa-cart-shopping" style={{ color: '#000000' }}></i></span>
-                  <span className="ms-1" id="cart_count">2</span>
+                  <span className="ms-1" id="cart_count">{cartItems.length}</span>
                 </Link>
                 <div className='ml-4 dropdown d-inline'>
                   <Link to="#!" className="btn dropdown-toggle text-black mr-3"

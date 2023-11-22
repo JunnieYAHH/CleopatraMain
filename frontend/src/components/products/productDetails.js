@@ -1,13 +1,7 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import '../../ProductDetails.css';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-
-import {
-    PRODUCT_DETAILS_REQUEST,
-    PRODUCT_DETAILS_SUCCESS,
-    PRODUCT_DETAILS_FAIL,
-} from '../../constants/productConstants';
 
 import MetaData from '../layouts/MetaData';
 import Loader from '../layouts/Loader';
@@ -17,8 +11,18 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearErrors } from '../../actions/productActions';
+import { addItemToCart } from '../../actions/cartActions'
+
+import {
+    PRODUCT_DETAILS_REQUEST,
+    PRODUCT_DETAILS_SUCCESS,
+    PRODUCT_DETAILS_FAIL,
+} from '../../constants/productConstants';
 
 const ProductDetails = () => {
+
+    const [quantity, setQuantity] = useState(1);
+
     const { id } = useParams();
     const dispatch = useDispatch();
     const { loading, product } = useSelector(state => state.productDetails);
@@ -55,6 +59,29 @@ const ProductDetails = () => {
             dispatch(clearErrors());
         };
     }, [dispatch, id]);
+
+    const addToCart = () => {
+        dispatch(addItemToCart(id, quantity));
+        toast.success('Item Added to Cart');
+    }
+
+    const increaseQty = (e) => {
+        const count = document.querySelector('.count')
+
+        if (count.valueAsNumber >= product.stock) return;
+
+        const qty = count.valueAsNumber + 1;
+        setQuantity(qty)
+    }
+
+    const decreaseQty = (e) => {
+        const count = document.querySelector('.count')
+
+        if (count.valueAsNumber <= 1) return;
+
+        const qty = count.valueAsNumber - 1;
+        setQuantity(qty)
+    }
 
     return (
         <Fragment>
@@ -95,17 +122,19 @@ const ProductDetails = () => {
 
                                     <p id="product_price">Price: $ {product.price}</p>
                                     <div className="stockCounter d-inline">
-                                        <span className="btn btn-danger minus">-</span>
+                                        <span className="btn btn-danger minus" onClick={decreaseQty}>-</span>
 
-                                        <input type="number" className="form-control count d-inline" value="1" readOnly />
+                                        <input type="number" className="form-control count d-inline" value={quantity} readOnly />
 
-                                        <span className="btn btn-primary plus">+</span>
+                                        <span className="btn btn-primary plus" onClick={increaseQty}>+</span>
                                     </div>
-                                    <button type="button" id="cart_btn" className="btn btn-primary d-inline ml-4">Add to Cart</button>
+                                    <button type="button" id="cart_btn" className="btn btn-primary d-inline ml-4" disabled={product.stock === 0} onClick={addToCart}>
+                                        Add to Cart
+                                    </button>
 
                                     <hr />
 
-                                    <p>Status: <span id="stock_status" className={product.stock > 0 ? 'greenColor' : 'redColor'} > {product.stock > 0 ? 'In Stock' : 'Out of Stock'}</span></p>
+                                    <p>Status: <span id="stock_status" className={product.stock > 0 ? 'greenColor' : 'redColor'} > {product.stock > 1 ? 'In Stock' : 'Out of Stock'}</span></p>
 
                                     <hr />
 
