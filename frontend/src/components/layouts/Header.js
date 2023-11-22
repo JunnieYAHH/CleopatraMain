@@ -9,15 +9,14 @@ const Header = () => {
 
   const navigate = useNavigate();
 
-  const token = localStorage.getItem('token');
   const user = JSON.parse(localStorage.getItem('user'));
-  const { cartItems } = useSelector(state => state.cart)
+  const { cartItems } = useSelector(state => state.cart);
 
 
   const logoutHandler = () => {
-    localStorage.removeItem('token', token);
-    localStorage.removeItem('user', user);
     navigate('/login')
+    localStorage.removeItem('token');
+    localStorage.removeItem('user', user);
   }
 
   return (
@@ -27,7 +26,7 @@ const Header = () => {
         <div className="container">
           <a className="navbar-brand" href="/">
             <Link to="/">
-              <img src="../../images/CleopatraLogo.png" alt="Logo"  style={{ width: '150px', height: '75px',  borderRadius: '25%' }} />
+              <img src="../../images/CleopatraLogo.png" alt="Logo" style={{ width: '150px', height: '75px', borderRadius: '25%' }} />
             </Link>
           </a>
           <Search />

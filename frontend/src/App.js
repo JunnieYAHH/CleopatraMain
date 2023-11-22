@@ -5,6 +5,7 @@ import Footer from './components/layouts/Footer';
 import Home from './components/layouts/Home';
 import ProductDetails from './components/products/productDetails';
 import Cart from './components/cart/Cart';
+import Shipping from './components/cart/Shipping'
 import Login from './components/user/Login';
 import Register from './components/user/Register';
 import Profile from './components/user/Profile';
@@ -31,7 +32,10 @@ function App() {
                         <Route path="/" element={<Home />} />
                         <Route path="/search/:keyword" element={<Home />} />
                         <Route path="/product/:id" element={<ProductDetails />} />
+
                         <Route path="/cart" element={<Cart />} />
+                        <Route path="/shipping" element={<ProtectedRoute element={Shipping} />} />
+
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
                         {/* Route for /me, using ProtectedRoute */}

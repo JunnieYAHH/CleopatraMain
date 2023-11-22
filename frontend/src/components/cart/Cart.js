@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,11 +9,22 @@ import MetaData from '../layouts/MetaData';
 const Cart = () => {
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { cartItems } = useSelector(state => state.cart)
+    const { isAuthenticated } = useSelector(state => state.auth);
+
 
     const handleRemoveFromCart = (id) => {
         dispatch(removeFromCart(id));
     };
+
+    const checkoutHandler = () => {
+        if (!isAuthenticated) {
+            navigate('/login');
+        } else {
+            navigate('/shipping');
+        }
+    }
 
     return (
         <Fragment>
@@ -72,7 +83,7 @@ const Cart = () => {
                                 <p>Est. total: <span className="order-summary-values">$765.56</span></p>
 
                                 <hr />
-                                <button id="checkout_btn" className="btn btn-primary btn-block">Check out</button>
+                                <button id="checkout_btn" className="btn btn-primary btn-block" onClick={checkoutHandler}>Check out</button>
                             </div>
                         </div>
                     </div>
