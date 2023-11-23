@@ -60,7 +60,23 @@ export const getProductDetails = (id) => async (dispatch) => {
     }
 };
 
+export const getAdminProductS = () => async (dispatch) => {
+    try {
+        dispatch({ type: ADMIN_PRODUCTS_REQUEST });
 
+        const { data } = await axios.get('process.env.REACT_APP_API}/api/v1/admin/products');
+        dispatch({
+            type: ADMIN_PRODUCTS_SUCCESS,
+            payload: data.product
+        });
+    } catch (error) {
+        dispatch({
+            type: ADMIN_PRODUCTS_FAIL,
+            payload: error.response.data.message
+        });
+        return Promise.reject(error);
+    }
+};
 
 // Clear Errors
 export const clearErrors = () => async (dispatch) => {
