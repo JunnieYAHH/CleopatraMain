@@ -18,6 +18,8 @@ import Register from './components/user/Register';
 import Profile from './components/user/Profile';
 import UpdateProfile from './components/user/updateProfile';
 
+// admin imports
+import Dashboard from './components/admin/Dashboard';
 import ProtectedRoute from './components/route/ProtectedRoute';
 function App() {
 
@@ -65,8 +67,6 @@ function App() {
                         {/* Route for /me, using ProtectedRoute */}
                         <Route path="/me" element={<ProtectedRoute element={Profile} />} />
                         <Route path="/me/update" element={<ProtectedRoute element={UpdateProfile} />} />
-                        <Route path="/dashboard" isAdmin={true} element={<ProtectedRoute element={Dashboard} />} />
-
                     </Routes>
                 </div>
                 <Footer />
