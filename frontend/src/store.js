@@ -13,7 +13,7 @@ const reducer = combineReducers({
     productDetails: productDetailsReducer,
     auth: authReducer,
     user: userReducer,
-    cart: cartReducer
+    cart: cartReducer,
 })
 
 

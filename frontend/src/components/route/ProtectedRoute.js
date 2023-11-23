@@ -2,16 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { loadUser } from '../../actions/userActions';
 
-const ProtectedRoute = ({ element: Element }) => {
+const ProtectedRoute = ({ isAdmin, element: Element }) => {
     const [loading, setLoading] = useState(true);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
                 await loadUser();
-                const user = JSON.parse(localStorage.getItem('user'));
-                setIsAuthenticated(!!user);
+                const loadedUser = JSON.parse(localStorage.getItem('user'));
+                setUser(loadedUser);
+                setIsAuthenticated(!!loadedUser);
             } catch (error) {
                 console.error('Error loading user:', error);
             } finally {
@@ -26,11 +28,15 @@ const ProtectedRoute = ({ element: Element }) => {
         return <div>Loading...</div>;
     }
 
-    return isAuthenticated ? (
-        <Element />
-    ) : (
-        <Navigate to="/login" />
-    );
+    if (!isAuthenticated) {
+        return <Navigate to="/login" />;
+    }
+
+    if (isAdmin && user && user.role !== 'admin') {
+        return <Navigate to="/" />;
+    }
+
+    return <Element />;
 };
 
 export default ProtectedRoute;

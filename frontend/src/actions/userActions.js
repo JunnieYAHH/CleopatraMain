@@ -36,6 +36,7 @@ export const login = (email, password) => async (dispatch) => {
         })
 
         localStorage.setItem('token', data.token);
+        sessionStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
 
     } catch (error) {
