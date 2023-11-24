@@ -19,18 +19,40 @@ import {
     PRODUCT_DETAILS_FAIL,
 } from '../../constants/productConstants';
 
-const ProductDetails = () => {
+const ProductDetails = ({ addItemToCart, cartItems }) => {
 
+    const [loadings, setLoading] = useState(true)
     const [quantity, setQuantity] = useState(1);
+    const [rating, setRating] = useState(0);
+    const [products, setProduct] = useState({})
+    const [error, setError] = useState('')
+    const [comment, setComment] = useState('');
+    const [errorReview, setErrorReview] = useState('');
+    const [success, setSuccess] = useState('')
 
     const { id } = useParams();
     const dispatch = useDispatch();
     const { loading, product } = useSelector(state => state.productDetails);
 
+    const user = localStorage.getItem('user');
     const errMsg = (message = '') =>
         toast.error(message, {
             position: toast.POSITION.BOTTOM_CENTER,
         });
+    const successMsg = (message = '') => toast.success(message, {
+        position: toast.POSITION.BOTTOM_CENTER
+    });
+
+    const productDetails = async (id) => {
+        let link = `http://localhost:4001/api/v1/product/${id}`
+        console.log(link)
+        let res = await axios.get(link)
+        console.log(res)
+        if (!res)
+            setError('Product not found')
+        setProduct(res.data.product)
+        setLoading(false)
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -55,10 +77,21 @@ const ProductDetails = () => {
 
         fetchData();
 
+        productDetails(id)
+        if (errorReview) {
+            errMsg(errorReview)
+            setErrorReview('')
+        }
+        if (success) {
+            successMsg('Review posted successfully')
+            setSuccess(false)
+
+        }
+
         return () => {
             dispatch(clearErrors());
         };
-    }, [dispatch, id]);
+    }, [id, error, errorReview, success]);
 
     const addToCart = () => {
         dispatch(addItemToCart(id, quantity));
@@ -82,6 +115,71 @@ const ProductDetails = () => {
         const qty = count.valueAsNumber - 1;
         setQuantity(qty)
     }
+
+
+    function setUserRatings() {
+        const stars = document.querySelectorAll('.star');
+
+        stars.forEach((star, index) => {
+            star.starValue = index + 1;
+
+            ['click', 'mouseover', 'mouseout'].forEach(function (e) {
+                star.addEventListener(e, showRatings);
+            })
+        })
+        function showRatings(e) {
+            stars.forEach((star, index) => {
+                if (e.type === 'click') {
+                    if (index < this.starValue) {
+                        star.classList.add('orange')
+
+                        setRating(this.starValue)
+                    } else {
+                        star.classList.remove('orange')
+                    }
+                }
+                if (e.type === 'mouseover') {
+                    if (index < this.starValue) {
+                        star.classList.add('yellow')
+                    } else {
+                        star.classList.remove('yellow')
+                    }
+                }
+                if (e.type === 'mouseout') {
+                    star.classList.remove('yellow')
+                }
+            })
+        }
+    }
+
+    const newReview = async (reviewData) => {
+        try {
+            const token = localStorage.getItem('token')
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+
+            const { data } = await axios.put(`${process.env.REACT_APP_API}/api/v1/review`, reviewData, config)
+            setSuccess(data.success)
+
+        } catch (error) {
+            setErrorReview(error.response.data.message)
+        }
+    }
+
+    const reviewHandler = () => {
+        const formData = new FormData();
+
+        formData.set('rating', rating);
+        formData.set('comment', comment);
+        formData.set('productId', id);
+
+        dispatch(newReview(formData));
+    }
+
 
     return (
         <Fragment>
@@ -142,11 +240,15 @@ const ProductDetails = () => {
                                     <p>{product.description}</p>
                                     <hr />
                                     <p id="product_seller mb-3">Sold by: <strong>{product.seller}</strong></p>
+                                    {user ?
 
-                                    <button id="review_btn" type="button" className="btn btn-primary mt-4" data-toggle="modal"
-                                        data-target="#ratingModal">
-                                        Submit Your Review
-                                    </button>
+                                        <button id="review_btn" type="button" className="btn btn-primary mt-4" data-toggle="modal"
+                                            data-target="#ratingModal" onClick={setUserRatings}>
+                                            Submit Your Review
+                                        </button>
+                                        :
+                                        <div className="alert alert-danger mt-5" type='alert'>Login Firts to Add Review</div>
+                                    }
 
                                     <div className="row mt-2 mb-5">
                                         <div className="rating w-50">

@@ -11,6 +11,7 @@ import ConfirmOrder from './components/cart/ConfirmOrder'
 import Payment from './components/cart/Payment'
 import OrderSuccess from './components/cart/OrderSuccess'
 import ListOrders from './components/orders/ListOrders'
+import OrderDetails from './components/orders/OrderDetails'
 // admin imports
 import Dashboard from './components/admin/Dashboard';
 import Login from './components/user/Login';
@@ -30,6 +31,14 @@ function App() {
             ? JSON.parse(localStorage.getItem('shippingInfo'))
             : {},
     })
+
+    const removeItemFromCart = async (id) => {
+        setState({
+          ...state,
+          cartItems: state.cartItems.filter(i => i.product !== id)
+        })
+        localStorage.setItem('cartItems', JSON.stringify(state.cartItems))
+      }
 
     const saveShippingInfo = async (data) => {
         setState({
@@ -52,13 +61,13 @@ function App() {
                         <Route path="/search/:keyword" element={<Home />} />
                         <Route path="/product/:id" element={<ProductDetails />} />
 
-                        <Route path="/cart" element={<Cart />} />
+                        <Route path="/cart" element={<Cart cartItems={state.cartItems} addItemToCart={addItemToCart} removeItemFromCart={removeItemFromCart} />} exact="true" />
                         <Route path="/shipping" element={<Shipping shipping={state.shippingInfo} saveShippingInfo={saveShippingInfo} />} />
                         <Route path="/order/confirm" element={<ProtectedRoute element={ConfirmOrder} />} />
                         <Route path="/payment" element={<Payment shippingInfo={state.shippingInfo} />} />
                         <Route path="/success" element={<OrderSuccess />} />
                         <Route path="/orders/me" element={<ListOrders />} />
-
+                        <Route path="/order/:id" element={<OrderDetails />} />
 
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
