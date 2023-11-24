@@ -19,7 +19,7 @@ import Dashboard from './components/admin/Dashboard';
 import CreateProduct from './components/admin/CreateProduct';
 import ProductsList from './components/admin/ProductsList';
 import OrdersList from './components/admin/OrdersList';
-// import ProcessOrder from './components/admin/ProcessOrder';
+import ProcessOrder from './components/admin/ProcessOrder';
 // import UsersList from './components/admin/UsersList';
 import Login from './components/user/Login';
 import Register from './components/user/Register';
@@ -125,6 +125,8 @@ function App() {
             <Route path="/dashboard" element={<ProtectedRoute element={Dashboard} isAdmin={true} />} />
             <Route path="/admin/products" element={<ProtectedRoute element={ProductsList} isAdmin={true} />} />
             <Route path="/admin/orders" element={<ProtectedRoute element={OrdersList} isAdmin={true} />} />
+            <Route path="/admin/order/:id" element={<ProtectedRoute element={ProcessOrder} isAdmin={true} />} />
+
 
           </Routes>
         </div>
