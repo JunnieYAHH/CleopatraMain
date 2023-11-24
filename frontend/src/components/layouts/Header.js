@@ -12,7 +12,6 @@ const Header = () => {
   const user = JSON.parse(localStorage.getItem('user'));
   const { cartItems } = useSelector(state => state.cart);
 
-
   const logoutHandler = () => {
     localStorage.removeItem('token');
     sessionStorage.removeItem('token');

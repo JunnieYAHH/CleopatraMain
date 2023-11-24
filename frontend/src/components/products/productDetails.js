@@ -44,8 +44,9 @@ const ProductDetails = ({   cartItems }) => {
         position: toast.POSITION.BOTTOM_CENTER
     });
 
+
     const productDetails = async (id) => {
-        let link = `http://localhost:4001/api/v1/product/${id}`
+        let link = `${process.env.REACT_APP_API}/api/v1/product/${id}`
         console.log(link)
         let res = await axios.get(link)
         console.log(res)

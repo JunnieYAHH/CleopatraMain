@@ -26,6 +26,8 @@ const Cart = () => {
         }
     }
 
+    
+
     return (
         <Fragment>
             <MetaData title={'Your Cart'} />

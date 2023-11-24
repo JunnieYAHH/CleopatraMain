@@ -238,6 +238,7 @@ exports.updateUser = catchAsyncError(async (req, res, next) => {
 
 })
 
+
 // Delete user  => /api/v1/admin/user/:id
 exports.deleteUser = catchAsyncError(async (req, res, next) => {
     const deletedUser = await User.deleteOne({ _id: req.params.id });

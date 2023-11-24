@@ -19,6 +19,7 @@ import Register from './components/user/Register';
 import Profile from './components/user/Profile';
 import UpdateProfile from './components/user/updateProfile';
 
+
 import ProtectedRoute from './components/route/ProtectedRoute';
 function App() {
 

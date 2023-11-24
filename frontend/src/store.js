@@ -30,6 +30,7 @@ let initialState = {
 }
 
 
+
 const middleware = [thunk];
 const store = legacy_createStore(reducer, initialState, composeWithDevTools(applyMiddleware(...middleware)))
 

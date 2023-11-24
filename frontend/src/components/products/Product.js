@@ -31,8 +31,7 @@ const Product = ({ product, col }) => {
                     <Link
                         to={`/product/${product._id}`}
                         id="view_btn"
-                        className="btn btn-primary btn-block"
-                    >
+                        className="btn btn-primary btn-block">
                         View Details
                     </Link>
                 </div>

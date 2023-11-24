@@ -24,8 +24,10 @@ const OrderSuccess = () => {
 
             </div>
 
+
         </Fragment>
     )
 }
+
 
 export default OrderSuccess

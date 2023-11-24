@@ -12,5 +12,4 @@ const MetaData = ({ title }) => {
     </Helmet>
   );
 };
-
 export default MetaData;

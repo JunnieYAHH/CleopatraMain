@@ -89,7 +89,6 @@ const ConfirmOrder = () => {
                     </div>
                 </div>
 
-
             </div>
 
         </Fragment>

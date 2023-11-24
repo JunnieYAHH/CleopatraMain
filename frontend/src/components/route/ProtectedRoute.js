@@ -36,6 +36,7 @@ const ProtectedRoute = ({ isAdmin, element: Element }) => {
         return <Navigate to="/" />;
     }
 
+    
     return <Element />;
 };
 
