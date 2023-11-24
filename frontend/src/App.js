@@ -20,12 +20,12 @@ import CreateProduct from './components/admin/CreateProduct';
 import ProductsList from './components/admin/ProductsList';
 import OrdersList from './components/admin/OrdersList';
 import ProcessOrder from './components/admin/ProcessOrder';
-// import UsersList from './components/admin/UsersList';
+import UsersList from './components/admin/UsersList';
+import UpdateUser from './components/admin/UpdateUser';
 import Login from './components/user/Login';
 import Register from './components/user/Register';
 import Profile from './components/user/Profile';
 import UpdateProfile from './components/user/updateProfile';
-
 
 import ProtectedRoute from './components/route/ProtectedRoute';
 function App() {
@@ -126,6 +126,8 @@ function App() {
             <Route path="/admin/products" element={<ProtectedRoute element={ProductsList} isAdmin={true} />} />
             <Route path="/admin/orders" element={<ProtectedRoute element={OrdersList} isAdmin={true} />} />
             <Route path="/admin/order/:id" element={<ProtectedRoute element={ProcessOrder} isAdmin={true} />} />
+            <Route path="/admin/users" element={<ProtectedRoute element={UsersList} isAdmin={true} />} />
+            <Route path="/admin/user/:id" element={<ProtectedRoute element={UpdateUser} isAdmin={true} />} />
 
 
           </Routes>
