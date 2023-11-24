@@ -33,7 +33,6 @@ import UpdateProfile from './components/user/updateProfile';
 import ProtectedRoute from './components/route/ProtectedRoute';
 function App() {
 
-
   const [state, setState] = useState({
     cartItems: localStorage.getItem('cartItems')
       ? JSON.parse(localStorage.getItem('cartItems'))
@@ -58,6 +57,10 @@ function App() {
 
       const isItemExist = state.cartItems.find(i => i.product === item.product)
       console.log(isItemExist, state)
+      // setState({
+      //   ...state,
+      //   cartItems: [...state.cartItems, item]
+      // })
       if (isItemExist) {
         setState({
           ...state,
@@ -79,6 +82,7 @@ function App() {
       toast.error(error, {
         position: toast.POSITION.TOP_LEFT
       });
+      // navigate('/')
     }
 
   }
@@ -98,7 +102,6 @@ function App() {
     })
     localStorage.setItem('shippingInfo', JSON.stringify(data))
   }
-
   return (
     <Router>
       <div className="App">
