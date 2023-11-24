@@ -69,6 +69,7 @@ function App() {
                         <Route path="/orders/me" element={<ListOrders />} />
                         <Route path="/order/:id" element={<OrderDetails />} />
 
+
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
                         {/* Route for /me, using ProtectedRoute */}

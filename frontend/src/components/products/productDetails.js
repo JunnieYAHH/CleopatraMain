@@ -3,6 +3,7 @@ import '../../ProductDetails.css';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
+
 import MetaData from '../layouts/MetaData';
 import Loader from '../layouts/Loader';
 import { Carousel } from 'react-bootstrap'
@@ -19,10 +20,10 @@ import {
     PRODUCT_DETAILS_FAIL,
 } from '../../constants/productConstants';
 
-const ProductDetails = ({ addItemToCart, cartItems }) => {
+const ProductDetails = ({   cartItems }) => {
 
     const [loadings, setLoading] = useState(true)
-    const [quantity, setQuantity] = useState(1);
+    const [quantity, setQuantity] = useState(1)
     const [rating, setRating] = useState(0);
     const [products, setProduct] = useState({})
     const [error, setError] = useState('')
