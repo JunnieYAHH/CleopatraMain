@@ -82,17 +82,17 @@ const productSchema = new mongoose.Schema({
             type: String,
             required: true
          },
-         images: [
+         reviewImages: [
             {
-               public_id: {
+               reviewPublic_id: {
                   type: String,
                   required: true
                },
-               url: {
+               reviewUrl: {
                   type: String,
                   required: true
                },
-            }
+            },
          ],
       }
    ],

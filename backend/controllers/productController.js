@@ -3,6 +3,7 @@ const Product = require('../models/product');
 const ErrorHandler = require('../utils/errorHandler');
 const catchAsyncErrors = require('../middlewares/catchAsyncError');
 const APIFeatures = require('../utils/apiFeatures')
+const cloudinary = require('cloudinary')
 
 //Create New Product  => /api/v1/product/create
 exports.createProduct = catchAsyncErrors(async (req, res) => {
@@ -40,6 +41,8 @@ exports.createProduct = catchAsyncErrors(async (req, res) => {
     req.body.user = req.user.id;
 
     const product = await Product.create(req.body);
+
+    console.log(product)
 
     res.status(200).json({
         success: true,
