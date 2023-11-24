@@ -1,10 +1,12 @@
 import axios from 'axios'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import ProductDetails from './components/products/productDetails';
+import { toast, ToastContainer } from 'react-toastify';
 import Header from './components/layouts/Header';
 import Footer from './components/layouts/Footer';
 import Home from './components/layouts/Home';
-import ProductDetails from './components/products/productDetails';
+import "react-toastify/dist/ReactToastify.css";
 import Cart from './components/cart/Cart';
 import Shipping from './components/cart/Shipping'
 import ConfirmOrder from './components/cart/ConfirmOrder'
@@ -14,6 +16,11 @@ import ListOrders from './components/orders/ListOrders'
 import OrderDetails from './components/orders/OrderDetails'
 // admin imports
 import Dashboard from './components/admin/Dashboard';
+import CreateProduct from './components/admin/CreateProduct';
+import ProductsList from './components/admin/ProductsList';
+// import OrdersList from './components/admin/OrdersList';
+// import ProcessOrder from './components/admin/ProcessOrder';
+// import UsersList from './components/admin/UsersList';
 import Login from './components/user/Login';
 import Register from './components/user/Register';
 import Profile from './components/user/Profile';
@@ -33,6 +40,46 @@ function App() {
             : {},
     })
 
+    const addItemToCart = async (id, quantity) => {
+      console.log(id, quantity)
+      try {
+        const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/product/${id}`)
+        const item = {
+          product: data.product._id,
+          name: data.product.name,
+          price: data.product.price,
+          image: data.product.images[0].url,
+          stock: data.product.stock,
+          quantity: quantity
+        }
+  
+        const isItemExist = state.cartItems.find(i => i.product === item.product)
+        console.log(isItemExist, state)
+        if (isItemExist) {
+          setState({
+            ...state,
+            cartItems: state.cartItems.map(i => i.product === isItemExist.product ? item : i)
+          })
+        }
+        else {
+          setState({
+            ...state,
+            cartItems: [...state.cartItems, item]
+          })
+        }
+  
+        toast.success('Item Added to Cart', {
+          position: toast.POSITION.BOTTOM_RIGHT
+        })
+  
+      } catch (error) {
+        toast.error(error, {
+          position: toast.POSITION.TOP_LEFT
+        });
+      }
+  
+    }
+
     const removeItemFromCart = async (id) => {
         setState({
           ...state,
@@ -48,7 +95,6 @@ function App() {
         })
         localStorage.setItem('shippingInfo', JSON.stringify(data))
     }
-
 
     return (
         <Router>
@@ -75,8 +121,14 @@ function App() {
                         <Route path="/register" element={<Register />} />
                         {/* Route for /me, using ProtectedRoute */}
                         <Route path="/me" element={<ProtectedRoute element={Profile} />} />
-                        <Route path="/me/update" element={<ProtectedRoute element={UpdateProfile} />} />
-                        <Route path="/dashboard" isAdmin={true} element={<ProtectedRoute element={Dashboard} />} />
+                        <Route path="/me/update" element={<ProtectedRoute element={UpdateProfile} isAdmin={true}/>} />
+                        <Route path="/dashboard" element={<ProtectedRoute element={Dashboard} isAdmin={true}/>} />
+                        <Route path="/admin/product" element={<ProtectedRoute element={CreateProduct} isAdmin={true}/>} />
+                        <Route path="/admin/products" element={<ProtectedRoute element={ProductsList} isAdmin={true}/>} />
+                        {/* <Route path="/admin/orders" element={<ProtectedRoute element={OrdersList} isAdmin={true}/>} />
+                        <Route path="/admin/order/:id" element={<ProtectedRoute element={ProcessOrder} isAdmin={true}/>} />
+                        <Route path="/admin/users" element={<ProtectedRoute element={UsersList} isAdmin={true}/>} /> */}
+                        
 
                     </Routes>
                 </div>

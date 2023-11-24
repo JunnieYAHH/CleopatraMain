@@ -80,25 +80,22 @@ exports.allOrders = catchAsyncError(async (req, res, next) => {
 //Update / Process Order - ADMIN => /api/v1/admin/order/:id
 exports.processOrders = catchAsyncError(async (req, res, next) => {
     const order = await Order.findById(req.params.id)
-    // const product = await Product.findById(id);
-
 
     if (order.orderStatus === 'Delivered') {
-        return next(new ErrorHandler('The order has already been delivered', 400))
+        return res.status(404).json({ message: `You have already delivered this order` })
+
     }
 
     order.orderItems.forEach(async item => {
         await updateStock(item.product, item.quantity)
     })
 
-
-    order.orderStatus = req.body.status,
-        order.deliveredAt = Date.now()
-
-    await order.save();
+    order.orderStatus = req.body.status
+    order.deliveredAt = Date.now()
+    await order.save()
 
     res.status(200).json({
-        success: true
+        success: true,
     })
 })
 
