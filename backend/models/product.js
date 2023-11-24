@@ -38,6 +38,7 @@ const productSchema = new mongoose.Schema({
       required: [true, 'Please select product category'],
       enum: {
          values: [
+            'Please Select Category..',
             'Necklace',
             'Earrings',
             'Rings',
@@ -80,7 +81,19 @@ const productSchema = new mongoose.Schema({
          comment: {
             type: String,
             required: true
-         }
+         },
+         images: [
+            {
+               public_id: {
+                  type: String,
+                  required: true
+               },
+               url: {
+                  type: String,
+                  required: true
+               },
+            }
+         ],
       }
    ],
    user: {

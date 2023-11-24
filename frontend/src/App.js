@@ -127,6 +127,7 @@ function App() {
             <Route path="/me/update" element={<ProtectedRoute element={UpdateProfile} isAdmin={true} />} />
             <Route path="/dashboard" element={<ProtectedRoute element={Dashboard} isAdmin={true} />} />
             <Route path="/admin/products" element={<ProtectedRoute element={ProductsList} isAdmin={true} />} />
+            <Route path="/admin/product" element={<ProtectedRoute element={CreateProduct} isAdmin={true} />} />
             <Route path="/admin/orders" element={<ProtectedRoute element={OrdersList} isAdmin={true} />} />
             <Route path="/admin/order/:id" element={<ProtectedRoute element={ProcessOrder} isAdmin={true} />} />
             <Route path="/admin/users" element={<ProtectedRoute element={UsersList} isAdmin={true} />} />

@@ -23,6 +23,7 @@ const CreateProduct = () => {
     const token = localStorage.getItem('token');
 
     const categories = [
+        'Please Select Category...',
         'Necklace',
         'Earrings',
         'Rings',
@@ -150,9 +151,9 @@ const CreateProduct = () => {
 
                                 <div className="form-group">
                                     <label htmlFor="category_field">Category</label>
-                                    <select className="form-control" id="category_field" value={category} onChange={(e) => setCategory(e.target.value)}>
+                                    <select className="form-control" id="category_field" value={category} onChange={(e) => setCategory(e.target.value)} style={{ color: 'gray' }} >
                                         {categories.map(category => (
-                                            <option key={category} value={category} >{category}</option>
+                                            <option key={category} value={category} style={{ color: category[0] ? 'black' : 'red' }}>{category}</option>
                                         ))}
 
                                     </select>
