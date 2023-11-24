@@ -40,14 +40,8 @@ exports.createProduct = catchAsyncErrors(async (req, res) => {
     req.body.user = req.user.id;
 
     const product = await Product.create(req.body);
-    if (!product)
-        return res.status(400).json({
-            success: false,
-            message: 'Product not created'
-        })
 
-
-    res.status(201).json({
+    res.status(200).json({
         success: true,
         product
     })

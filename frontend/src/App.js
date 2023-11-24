@@ -13,7 +13,6 @@ import ConfirmOrder from './components/cart/ConfirmOrder'
 import Payment from './components/cart/Payment'
 import OrderSuccess from './components/cart/OrderSuccess'
 import ListOrders from './components/orders/ListOrders'
-import OrderDetails from './components/orders/OrderDetails'
 // admin imports
 import Dashboard from './components/admin/Dashboard';
 import CreateProduct from './components/admin/CreateProduct';
@@ -121,14 +120,8 @@ function App() {
                         <Route path="/register" element={<Register />} />
                         {/* Route for /me, using ProtectedRoute */}
                         <Route path="/me" element={<ProtectedRoute element={Profile} />} />
-                        <Route path="/me/update" element={<ProtectedRoute element={UpdateProfile} isAdmin={true}/>} />
-                        <Route path="/dashboard" element={<ProtectedRoute element={Dashboard} isAdmin={true}/>} />
-                        <Route path="/admin/product" element={<ProtectedRoute element={CreateProduct} isAdmin={true}/>} />
-                        <Route path="/admin/products" element={<ProtectedRoute element={ProductsList} isAdmin={true}/>} />
-                        {/* <Route path="/admin/orders" element={<ProtectedRoute element={OrdersList} isAdmin={true}/>} />
-                        <Route path="/admin/order/:id" element={<ProtectedRoute element={ProcessOrder} isAdmin={true}/>} />
-                        <Route path="/admin/users" element={<ProtectedRoute element={UsersList} isAdmin={true}/>} /> */}
-                        
+                        <Route path="/me/update" element={<ProtectedRoute element={UpdateProfile} />} />
+                        <Route path="/dashboard" isAdmin={true} element={<ProtectedRoute element={Dashboard} />} />
 
                     </Routes>
                 </div>
