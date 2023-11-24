@@ -11,8 +11,11 @@ import ConfirmOrder from './components/cart/ConfirmOrder'
 import Payment from './components/cart/Payment'
 import OrderSuccess from './components/cart/OrderSuccess'
 import ListOrders from './components/orders/ListOrders'
+import OrderDetails from './components/orders/OrderDetails'
 // admin imports
 import Dashboard from './components/admin/Dashboard';
+import ProductsList from './components/admin/ProductsList';
+import NewProduct from './components/admin/NewProduct';
 import Login from './components/user/Login';
 import Register from './components/user/Register';
 import Profile from './components/user/Profile';
@@ -58,6 +61,7 @@ function App() {
                         <Route path="/payment" element={<Payment shippingInfo={state.shippingInfo} />} />
                         <Route path="/success" element={<OrderSuccess />} />
                         <Route path="/orders/me" element={<ListOrders />} />
+                        <Route path="/order/:id" element={<OrderDetails />} />
 
 
                         <Route path="/login" element={<Login />} />
@@ -65,7 +69,11 @@ function App() {
                         {/* Route for /me, using ProtectedRoute */}
                         <Route path="/me" element={<ProtectedRoute element={Profile} />} />
                         <Route path="/me/update" element={<ProtectedRoute element={UpdateProfile} />} />
+                        {/* Route for /admin, using ProtectedRoute */}
                         <Route path="/dashboard" isAdmin={true} element={<ProtectedRoute element={Dashboard} />} />
+                        <Route path="/admin/products" element={<ProtectedRoute element={ProductsList} isAdmin={true} />} />
+                        <Route path="/admin/product" element={<ProtectedRoute element={NewProduct} isAdmin={true} />} />
+
 
                     </Routes>
                 </div>
