@@ -23,21 +23,24 @@ const ProductDetails = () => {
     const [comment, setComment] = useState('')
     const [errorReview, setErrorReview] = useState('');
     const [success, setSuccess] = useState('')
+    const [reviewImages, setImages] = useState([]);
+    const [imagesPreview, setImagesPreview] = useState([])
+
     const errMsg = (message = '') => toast.error(message, {
         position: toast.POSITION.BOTTOM_CENTER
     });
     const successMsg = (message = '') => toast.success(message, {
         position: toast.POSITION.BOTTOM_CENTER
     });
-    
-  const [state, setState] = useState({
-    cartItems: localStorage.getItem('cartItems')
-      ? JSON.parse(localStorage.getItem('cartItems'))
-      : [],
-    shippingInfo: localStorage.getItem('shippingInfo')
-      ? JSON.parse(localStorage.getItem('shippingInfo'))
-      : {},
-  })
+
+    const [state, setState] = useState({
+        cartItems: localStorage.getItem('cartItems')
+            ? JSON.parse(localStorage.getItem('cartItems'))
+            : [],
+        shippingInfo: localStorage.getItem('shippingInfo')
+            ? JSON.parse(localStorage.getItem('shippingInfo'))
+            : {},
+    })
 
     let { id } = useParams()
     const addItemToCart = async (id, quantity) => {
@@ -155,6 +158,7 @@ const ProductDetails = () => {
             }
 
             const { data } = await axios.put(`${process.env.REACT_APP_API}/api/v1/review`, reviewData, config)
+            console.log('Review:', data)
             setSuccess(data.success)
 
         } catch (error) {
@@ -162,11 +166,34 @@ const ProductDetails = () => {
         }
     }
 
+    const onChange = e => {
+        const files = Array.from(e.target.files)
+        setImagesPreview([]);
+        setImages([])
+        files.forEach(file => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                if (reader.readyState === 2) {
+                    setImagesPreview(oldArray => [...oldArray, reader.result])
+                    setImages(oldArray => [...oldArray, reader.result])
+                }
+            }
+
+            reader.readAsDataURL(file)
+            // console.log(reader)
+        })
+
+    }
+
     const reviewHandler = () => {
         const formData = new FormData();
         formData.set('rating', rating);
         formData.set('comment', comment);
         formData.set('productId', id);
+        reviewImages.forEach(image => {
+            formData.append('images', image)
+        })
+
         newReview(formData)
 
     }
@@ -273,7 +300,45 @@ const ProductDetails = () => {
                                                     >
                                                     </textarea>
 
-                                                    <button className="btn my-3 float-right review-btn px-4 text-white" data-dismiss="modal" aria-label="Close" onClick={reviewHandler}>Submit</button>
+                                                    <form encType='multipart/form-data'>
+                                                        <div className='form-group'>
+                                                            <label>Images</label>
+
+                                                            <div className='custom-file'>
+                                                                <input
+                                                                    type='file'
+                                                                    name='images'
+                                                                    className='custom-file-input'
+                                                                    id='customFile'
+                                                                    onChange={onChange}
+                                                                    multiple
+                                                                />
+                                                                <label className='custom-file-label' htmlFor='customFile'>
+                                                                    Choose Images
+                                                                </label>
+                                                            </div>
+
+                                                            {imagesPreview.map((img, index) => (
+                                                                <img
+                                                                    src={img}
+                                                                    key={index}
+                                                                    alt={`Images Preview ${index + 1}`}
+                                                                    className='mt-3 mr-2'
+                                                                    width='55'
+                                                                    height='52'
+                                                                />
+                                                            ))}
+                                                        </div>
+
+                                                        <button
+                                                            className='btn my-3 float-right review-btn px-4 text-white'
+                                                            data-dismiss='modal'
+                                                            aria-label='Close'
+                                                            onClick={reviewHandler}
+                                                        >
+                                                            Submit
+                                                        </button>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>

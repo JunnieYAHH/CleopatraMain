@@ -147,39 +147,68 @@ exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
 
 // Create a new review => /api/v1/create/review
 exports.createReviewProduct = catchAsyncErrors(async (req, res, next) => {
-    const { rating, comment, productId } = req.body;
-	const review = {
-		user: req.user._id,
-		name: req.user.name,
-		rating: Number(rating),
-		comment
-	}
-	const product = await Product.findById(productId);
-	const isReviewed = product.reviews.find(
-		r => r.user && (r.user.toString() === req.user._id.toString())
-	)
-	if (isReviewed) {
-		product.reviews.forEach(review => {
-			console.log(review)
-			if (review.user && (review.user.toString() === req.user._id.toString())) {
-				review.comment = comment;
-				review.rating = rating;
-			}
-		})
-	} else {
-		product.reviews.push(review);
-		product.numOfReviews = product.reviews.length
-	}
-	product.ratings = product.reviews.reduce((acc, item) => item.rating + acc, 0) / product.reviews.length
-	await product.save({ validateBeforeSave: false });
-	if (!product)
-		return res.status(400).json({
-			success: false,
-			message: 'review not posted'
-		})
-	return res.status(200).json({
-		success: true
-	})
+    const { rating, comment, productId, images } = req.body;
+
+    const parsedReviewImages = typeof images === 'string' ? [images] : images;
+
+    const uploadedReviewImages = [];
+
+    for (let i = 0; i < parsedReviewImages.length; i++) {
+        const imageDataUri = parsedReviewImages[i];
+
+        try {
+            const result = await cloudinary.v2.uploader.upload(imageDataUri, {
+                folder: 'reviews',
+                width: 150,
+                crop: 'scale',
+            });
+
+            uploadedReviewImages.push({
+                reviewPublic_id: result.public_id,
+                reviewUrl: result.secure_url,
+            });
+        } catch (error) {
+            console.log(error);
+            // Handle error uploading the image to Cloudinary
+        }
+    }
+
+    const review = {
+        user: req.user._id,
+        name: req.user.name,
+        rating: Number(rating),
+        comment,
+        reviewImages: uploadedReviewImages,
+    };
+
+    const product = await Product.findById(productId);
+
+    if (!product) {
+        return res.status(404).json({
+            success: false,
+            message: 'Product not found',
+        });
+    }
+
+    product.reviews.push(review);
+    product.numOfReviews = product.reviews.length;
+
+    // Calculate the average rating
+    product.ratings =
+        product.reviews.reduce((acc, item) => item.rating + acc, 0) / product.reviews.length;
+
+    await product.save({ validateBeforeSave: false });
+
+    if (!product) {
+        return res.status(400).json({
+            success: false,
+            message: 'Review not posted',
+        });
+    }
+
+    return res.status(200).json({
+        success: true,
+    });
 })
 
 //Get Product Reviews => /api/v1/reviews/:id
