@@ -94,7 +94,6 @@ exports.getAdminProducts = catchAsyncErrors(async (req, res, next) => {
     });
 });
 
-
 //Get Single Product  => /api/v1/product/:id
 exports.getSingleProduct = catchAsyncErrors(async (req, res, next) => {
     const product = await Product.findById(req.params.id);
@@ -109,8 +108,6 @@ exports.getSingleProduct = catchAsyncErrors(async (req, res, next) => {
         product
     })
 })
-
-
 
 //Update Product => /api/v1/product/:id
 exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
@@ -132,7 +129,6 @@ exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
 })
 
 //Delete Product =>  /api/v1/admin/product/id
-
 exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
     const product = await Product.findByIdAndDelete(req.params.id);
     if (!product) {
@@ -219,6 +215,73 @@ exports.getProductReviews = catchAsyncErrors(async (req, res, next) => {
         success: true,
         reviews: product.reviews
     })
+})
+
+exports.updateReviewProduct = catchAsyncErrors(async (req, res, next) => {
+    // console.log(req.body)
+    try {
+        const product = await Product.findById(req.params.prod);
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                message: 'Product not found'
+            });
+        }
+
+        if (req.body.images && req.body.images.length > 0) {
+            for (let i = 0; i < product.reviews.length; i++) {
+                const reviewImages = product.reviews[i].reviewImages;
+
+                for (let j = 0; j < reviewImages.length; j++) {
+                    const result = await cloudinary.v2.uploader.destroy(reviewImages[j].reviewPublic_id);
+                }
+            }
+        }
+
+        const imagesLinks = [];
+        for (let i = 0; i < req.body.images.length; i++) {
+            const result = await cloudinary.v2.uploader.upload(req.body.images[i], {
+                folder: 'reviews'
+            });
+            imagesLinks.push({
+                reviewPublic_id: result.public_id,
+                reviewUrl: result.secure_url
+            });
+        }
+
+        const updatedReview = {
+            user: req.body.user,  
+            name: req.body.name,
+            rating: req.body.rating,
+            comment: req.body.comment,
+            reviewImages: imagesLinks
+        };
+
+        // console.log(updatedReview)
+
+        const reviewIndex = product.reviews.findIndex(review => review._id.toString() === req.params.reviewedId);
+
+        console.log(reviewIndex)
+
+
+        // Update the review in the product
+        product.reviews[reviewIndex] = updatedReview;
+
+        // Save the product with updated review
+        await product.save();
+
+        return res.status(200).json({
+            success: true,
+            message: 'Review updated successfully',
+            product
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: 'Internal Server Error'
+        });
+    }
 })
 
 //Delete Product Review => /api/v1/reviews/:id

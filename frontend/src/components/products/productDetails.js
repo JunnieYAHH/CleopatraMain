@@ -25,6 +25,8 @@ const ProductDetails = () => {
     const [success, setSuccess] = useState('')
     const [reviewImages, setImages] = useState([]);
     const [imagesPreview, setImagesPreview] = useState([])
+    
+    // console.log(product._id)
 
     const errMsg = (message = '') => toast.error(message, {
         position: toast.POSITION.BOTTOM_CENTER
@@ -58,10 +60,6 @@ const ProductDetails = () => {
 
             const isItemExist = state.cartItems.find(i => i.product === item.product)
             console.log(isItemExist, state)
-            // setState({
-            //   ...state,
-            //   cartItems: [...state.cartItems, item]
-            // })
             if (isItemExist) {
                 setState({
                     ...state,
@@ -83,7 +81,6 @@ const ProductDetails = () => {
             toast.error(error, {
                 position: toast.POSITION.TOP_LEFT
             });
-            // navigate('/')
         }
 
     }
@@ -180,7 +177,6 @@ const ProductDetails = () => {
             }
 
             reader.readAsDataURL(file)
-            // console.log(reader)
         })
 
     }
@@ -227,7 +223,7 @@ const ProductDetails = () => {
                             </Carousel>
                             {product.reviews && product.reviews.length > 0 && (
 
-                                <ListReviews reviews={product.reviews} />
+                                <ListReviews reviews={product.reviews} prod={product._id} />
 
                             )}
                         </div>
