@@ -33,7 +33,7 @@ const Login = () => {
 
     const loginWithFacebook = (email, accessToken) => {
         // Dispatch the necessary actions for Facebook login
-        dispatch(facebooklogin(email, accessToken));
+        dispatch(login(email, accessToken));
       };
 
     useEffect(() => {
