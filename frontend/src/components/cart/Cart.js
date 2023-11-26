@@ -12,67 +12,54 @@ const Cart = () => {
     const user = JSON.parse(localStorage.getItem('user'));
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    // const { cartItems } = useSelector(state => state.cart)
-    const cartItems = JSON.parse(localStorage.getItem('cartItems'));
+    const { cartItems } = useSelector(state => state.cart)
+    // const cartItems = JSON.parse(localStorage.getItem('cartItems'));
     const isAuthenticated = localStorage.getItem('user')
     const [product, setProduct] = useState({})
-    const [quantity, setQuantity] = useState(0)
+    const [quantity1, setQuantity] = useState(0)
 
     const [state, setState] = useState({
         cartItems: localStorage.getItem('cartItems')
-          ? JSON.parse(localStorage.getItem('cartItems'))
-          : [],
+            ? JSON.parse(localStorage.getItem('cartItems'))
+            : [],
         shippingInfo: localStorage.getItem('shippingInfo')
-          ? JSON.parse(localStorage.getItem('shippingInfo'))
-          : {},
-      })
+            ? JSON.parse(localStorage.getItem('shippingInfo'))
+            : {},
+    })
 
     const addItemToCart = async (id, quantity) => {
-        console.log('This is the pakening id',id)
+        console.log('This is the pakening Quantity', quantity);
         try {
-          const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/product/${id}`)
-          const item = {
-            product: data.product._id,
-            name: data.product.name,
-            price: data.product.price,
-            image: data.product.images[0].url,
-            stock: data.product.stock,
-            quantity: quantity
-          }
-    
-          const isItemExist = state.cartItems.find(i => i.product === item.product)
-          console.log(isItemExist, state)
-          // setState({
-          //   ...state,
-          //   cartItems: [...state.cartItems, item]
-          // })
-          if (isItemExist) {
-            setState({
-              ...state,
-              cartItems: state.cartItems.map(i => i.product === isItemExist.product ? item : i)
-            })
-          }
-          else {
-            setState({
-              ...state,
-              cartItems: [...state.cartItems, item]
-            })
-          }
-    
-          toast.success('Item Added to Cart', {
-            position: toast.POSITION.BOTTOM_RIGHT
-          })
-    
-        } catch (error) {
-          toast.error(error, {
-            position: toast.POSITION.TOP_LEFT
-          });
-          // navigate('/')
-        }
-    
-      }
+            const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/product/${id}`);
+            const item = {
+                product: data.product._id,
+                name: data.product.name,
+                price: data.product.price,
+                image: data.product.images[0].url,
+                stock: data.product.stock,
+                quantity: quantity
+            };
+            const storedCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+            const isItemExist = storedCartItems.find(i => i.product === item.product);
 
-    console.log(user._id)
+            if (isItemExist) {
+                const updatedCartItems = storedCartItems.map(i => i.product === isItemExist.product ? item : i);
+                localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+            } else {
+                const updatedCartItems = [...storedCartItems, item];
+                localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+            }
+            // console.log('After local storage update:', JSON.parse(localStorage.getItem('cartItems')));
+            toast.success('Item Added to Cart', {
+                position: toast.POSITION.BOTTOM_RIGHT
+            });
+        } catch (error) {
+            toast.error(error, {
+                position: toast.POSITION.TOP_LEFT
+            });
+        }
+    };
+
     const handleRemoveFromCart = (id) => {
         dispatch(removeFromCart(id));
     };
@@ -85,16 +72,18 @@ const Cart = () => {
         }
     }
 
-    const increaseQty = (id, quantity, stock) => {
+    const increaseQty = async (id, quantity, stock) => {
         const newQty = quantity + 1;
         if (newQty > stock) return;
-        addItemToCart(id, newQty);
+        await addItemToCart(id, newQty);
+        window.location.reload()
     }
 
-    const decreaseQty = (id, quantity) => {
+    const decreaseQty = async (id, quantity) => {
         const newQty = quantity - 1;
         if (newQty <= 0) return;
-        addItemToCart(id, newQty);
+        await addItemToCart(id, newQty);
+        window.location.reload()
     }
 
     return (
@@ -127,10 +116,10 @@ const Cart = () => {
 
                                             <div className="col-4 col-lg-3 mt-4 mt-lg-0">
                                                 <div className="stockCounter d-inline">
-                                                <span className="btn btn-danger minus" onClick={decreaseQty} >-</span>
+                                                    <span className="btn btn-danger minus" onClick={() => decreaseQty(item.product, item.quantity)}>-</span>
                                                     <input type="number" className="form-control count d-inline" value={item.quantity} readOnly />
 
-                                                    <span className="btn btn-primary plus" onClick={increaseQty}>+</span>
+                                                    <span className="btn btn-primary plus" onClick={() => increaseQty(item.product, item.quantity, item.stock)}>+</span>
                                                 </div>
                                             </div>
 

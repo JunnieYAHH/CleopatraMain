@@ -48,6 +48,46 @@ function App() {
         : {},
     })
 
+    
+    // const addItemToCart = async (id, quantity) => {
+    //     console.log('This is the pakening id', id)
+    //     try {
+    //         const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/product/${id}`)
+    //         const item = {
+    //             product: data.product._id,
+    //             name: data.product.name,
+    //             price: data.product.price,
+    //             image: data.product.images[0].url,
+    //             stock: data.product.stock,
+    //             quantity: quantity
+    //         }
+
+    //         const isItemExist = state.cartItems.find(i => i.product === item.product)
+    //         console.log(isItemExist, state)
+    //         if (isItemExist) {
+    //             setState({
+    //                 ...state,
+    //                 cartItems: state.cartItems.map(i => i.product === isItemExist.product ? item : i)
+    //             })
+    //         }
+    //         else {
+    //             setState({
+    //                 ...state,
+    //                 cartItems: [...state.cartItems, item]
+    //             })
+    //         }
+
+    //         toast.success('Item Added to Cart', {
+    //             position: toast.POSITION.BOTTOM_RIGHT
+    //         })
+
+    //     } catch (error) {
+    //         toast.error(error, {
+    //             position: toast.POSITION.TOP_LEFT
+    //         });
+    //     }
+    // }
+
     const saveShippingInfo = async (data) => {
       setState({
         ...state,
