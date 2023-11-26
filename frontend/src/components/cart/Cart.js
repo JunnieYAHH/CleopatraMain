@@ -8,12 +8,14 @@ import MetaData from '../layouts/MetaData';
 
 const Cart = () => {
 
+    const user = JSON.parse(localStorage.getItem('user'));
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { cartItems } = useSelector(state => state.cart)
+    // const { cartItems } = useSelector(state => state.cart)
+    const cartItems = JSON.parse(localStorage.getItem('cartItems'));
     const isAuthenticated = localStorage.getItem('user')
 
-
+    console.log(user._id)
     const handleRemoveFromCart = (id) => {
         dispatch(removeFromCart(id));
     };
@@ -26,19 +28,21 @@ const Cart = () => {
         }
     }
 
-    
+
 
     return (
         <Fragment>
             <MetaData title={'Your Cart'} />
-            {cartItems.length === 0 ? <h2 className="mt-5">Your Cart is Empty</h2> : (
+            {cartItems === null || cartItems.length === 0 ? (
+                <h2 className="mt-5">Your Cart is Empty</h2>
+            ) : (
                 <Fragment>
                     <h2 className="mt-5">Your Cart: <b>{cartItems.length} items</b></h2>
 
                     <div className="row d-flex justify-content-between">
                         <div className="col-12 col-lg-8">
                             {cartItems.map(item => (
-                                <Fragment>
+                                <Fragment key={item.product}>
                                     <hr />
                                     <div className="cart-item">
                                         <div className="row">
@@ -92,6 +96,7 @@ const Cart = () => {
                 </Fragment>
             )}
         </Fragment>
+
     )
 }
 
