@@ -26,6 +26,7 @@ const ProductDetails = () => {
     const [reviewImages, setImages] = useState([]);
     const [imagesPreview, setImagesPreview] = useState([])
     const userId = user._id;
+    
 
     const dispatch = useDispatch();
 

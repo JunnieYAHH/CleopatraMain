@@ -1,6 +1,7 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-
+import { toast } from 'react-toastify';
+import axios from 'axios'
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeFromCart } from '../../actions/cartActions'
@@ -14,6 +15,62 @@ const Cart = () => {
     // const { cartItems } = useSelector(state => state.cart)
     const cartItems = JSON.parse(localStorage.getItem('cartItems'));
     const isAuthenticated = localStorage.getItem('user')
+    const [product, setProduct] = useState({})
+    const [quantity, setQuantity] = useState(0)
+
+    const [state, setState] = useState({
+        cartItems: localStorage.getItem('cartItems')
+          ? JSON.parse(localStorage.getItem('cartItems'))
+          : [],
+        shippingInfo: localStorage.getItem('shippingInfo')
+          ? JSON.parse(localStorage.getItem('shippingInfo'))
+          : {},
+      })
+
+    const addItemToCart = async (id, quantity) => {
+        console.log('This is the pakening id',id)
+        try {
+          const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/product/${id}`)
+          const item = {
+            product: data.product._id,
+            name: data.product.name,
+            price: data.product.price,
+            image: data.product.images[0].url,
+            stock: data.product.stock,
+            quantity: quantity
+          }
+    
+          const isItemExist = state.cartItems.find(i => i.product === item.product)
+          console.log(isItemExist, state)
+          // setState({
+          //   ...state,
+          //   cartItems: [...state.cartItems, item]
+          // })
+          if (isItemExist) {
+            setState({
+              ...state,
+              cartItems: state.cartItems.map(i => i.product === isItemExist.product ? item : i)
+            })
+          }
+          else {
+            setState({
+              ...state,
+              cartItems: [...state.cartItems, item]
+            })
+          }
+    
+          toast.success('Item Added to Cart', {
+            position: toast.POSITION.BOTTOM_RIGHT
+          })
+    
+        } catch (error) {
+          toast.error(error, {
+            position: toast.POSITION.TOP_LEFT
+          });
+          // navigate('/')
+        }
+    
+      }
 
     console.log(user._id)
     const handleRemoveFromCart = (id) => {
@@ -28,7 +85,17 @@ const Cart = () => {
         }
     }
 
+    const increaseQty = (id, quantity, stock) => {
+        const newQty = quantity + 1;
+        if (newQty > stock) return;
+        addItemToCart(id, newQty);
+    }
 
+    const decreaseQty = (id, quantity) => {
+        const newQty = quantity - 1;
+        if (newQty <= 0) return;
+        addItemToCart(id, newQty);
+    }
 
     return (
         <Fragment>
@@ -60,10 +127,10 @@ const Cart = () => {
 
                                             <div className="col-4 col-lg-3 mt-4 mt-lg-0">
                                                 <div className="stockCounter d-inline">
-                                                    <span className="btn btn-danger minus">-</span>
+                                                <span className="btn btn-danger minus" onClick={decreaseQty} >-</span>
                                                     <input type="number" className="form-control count d-inline" value={item.quantity} readOnly />
 
-                                                    <span className="btn btn-primary plus">+</span>
+                                                    <span className="btn btn-primary plus" onClick={increaseQty}>+</span>
                                                 </div>
                                             </div>
 
