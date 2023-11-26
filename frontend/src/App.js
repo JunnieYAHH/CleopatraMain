@@ -112,7 +112,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/search/:keyword" element={<Home />} />
-            <Route path="/product/:id" element={<ProductDetails />} />
+            <Route path="/product/:id" element={<ProductDetails cartItems={state.cartItems} />} exact="true" />
 
             <Route path="/cart" element={<Cart cartItems={state.cartItems} addItemToCart={addItemToCart} removeItemFromCart={removeItemFromCart} />} exact="true" />
             <Route path="/shipping" element={<Shipping shipping={state.shippingInfo} saveShippingInfo={saveShippingInfo} />} />

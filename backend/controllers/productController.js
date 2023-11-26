@@ -144,6 +144,7 @@ exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
 // Create a new review => /api/v1/create/review
 exports.createReviewProduct = catchAsyncErrors(async (req, res, next) => {
     const { rating, comment, productId, images } = req.body;
+    // console.log(images);
 
     const parsedReviewImages = typeof images === 'string' ? [images] : images;
 
@@ -241,7 +242,8 @@ exports.updateReviewProduct = catchAsyncErrors(async (req, res, next) => {
         const imagesLinks = [];
         for (let i = 0; i < req.body.images.length; i++) {
             const result = await cloudinary.v2.uploader.upload(req.body.images[i], {
-                folder: 'reviews'
+                folder: 'reviews',
+                width: 150,
             });
             imagesLinks.push({
                 reviewPublic_id: result.public_id,

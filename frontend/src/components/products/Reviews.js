@@ -1,10 +1,7 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { Carousel } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import Loader from '../layouts/Loader'
-import MetaData from '../layouts/MetaData'
-import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom'
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios'
 
@@ -21,7 +18,8 @@ const ListReviews = ({ reviews, prod }) => {
     const [errorReview, setErrorReview] = useState('');
     const [success, setSuccess] = useState('');
     console.log(user.name)
-    const { id } = useParams();
+    const navigate = useNavigate();
+
 
     const [updateCounter, setUpdateCounter] = useState(0);
 
@@ -99,7 +97,7 @@ const ListReviews = ({ reviews, prod }) => {
             };
 
             const { data } = await axios.put(`${process.env.REACT_APP_API}/api/v1/update/review/${prod}/${reviewedId}`, reviewData, config);
-                setSuccess(data.success);
+            setSuccess(data.success);
         } catch (error) {
             setErrorReview(error.response.data.message);
         }
@@ -133,6 +131,8 @@ const ListReviews = ({ reviews, prod }) => {
 
         closeModal();
         resetStateAfterSubmission();
+
+        navigate(`/product/${prod}`)
     };
 
     const onChange = (e) => {
@@ -185,13 +185,13 @@ const ListReviews = ({ reviews, prod }) => {
             <div className="modal fade" id="updateRatingModal" tabIndex="-1" role="dialog" aria-labelledby="updateRatingModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
-                        <div className="modal-header">
+                        <div className="modal-header" style={{ backgroundColor: 'black', color: 'white'}}>
                             <h5 className="modal-title" id="updateRatingModalLabel">Update Review</h5>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div className="modal-body">
+                        <div className="modal-body"  style={{ backgroundColor: 'gray' }}>
                             <ul className="stars" >
                                 <li className="star"><i className="fa fa-star"></i></li>
                                 <li className="star"><i className="fa fa-star"></i></li>
