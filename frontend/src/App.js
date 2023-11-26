@@ -23,6 +23,7 @@ import ProcessOrder from './components/admin/ProcessOrder';
 import UsersList from './components/admin/UsersList';
 import UpdateUser from './components/admin/UpdateUser';
 import ProductReviews from './components/admin/ProductReviews';
+import UpdateProduct from './components/admin/UpdateProduct';
 
 // auth user
 import Login from './components/user/Login';
@@ -136,7 +137,7 @@ function App() {
             <Route path="/admin/users" element={<ProtectedRoute element={UsersList} isAdmin={true} />} />
             <Route path="/admin/user/:id" element={<ProtectedRoute element={UpdateUser} isAdmin={true} />} />
             <Route path="/admin/reviews" element={<ProtectedRoute element={ProductReviews} isAdmin={true} />} />
-
+            <Route path="/admin/product/:id" element={<ProtectedRoute element={UpdateProduct} isAdmin={true} />} />
 
           </Routes>
         </div>
