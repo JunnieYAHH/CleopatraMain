@@ -28,9 +28,9 @@ const Header = () => {
     <Fragment>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container">
-          <LoginSocialFacebook appId="649261693947479" onResolve={(response) => {console.log(response);}} onReject={(error) => {console.log(error)}}>
+          {/* <LoginSocialFacebook appId="649261693947479" onResolve={(response) => {console.log(response);}} onReject={(error) => {console.log(error)}}>
             <FacebookLoginButton/>
-          </LoginSocialFacebook>
+          </LoginSocialFacebook> */}
           <a className="navbar-brand" href="/">
             <Link to="/">
               <img src="../../images/CleopatraLogo.png" alt="Logo" style={{ width: '150px', height: '75px', borderRadius: '25%' }} />

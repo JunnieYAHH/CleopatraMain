@@ -11,6 +11,11 @@ import { login, clearErrors } from '../../actions/userActions'
 import { useNavigate } from 'react-router-dom';
 
 
+
+//Google Login
+import { LoginSocialFacebook } from 'reactjs-social-login'
+import { FacebookLoginButton } from 'react-social-login-buttons'
+
 const Login = () => {
 
     const [email, setEmail] = useState('');
@@ -26,6 +31,11 @@ const Login = () => {
 
     const { isAuthenticated, error, loading } = useSelector(state => state.auth);
 
+    const loginWithFacebook = (email, accessToken) => {
+        // Dispatch the necessary actions for Facebook login
+        dispatch(facebooklogin(email, accessToken));
+      };
+
     useEffect(() => {
 
         if (isAuthenticated) {
@@ -39,9 +49,12 @@ const Login = () => {
 
     }, [dispatch, navigate, isAuthenticated, error])
 
-    const submitHandler = (e) => {
+    const submitHandler = (response, e) => {
         e.preventDefault();
         dispatch(login(email, password))
+
+        const { email, accessToken } = response;
+        dispatch(loginWithFacebook(email, accessToken));
     }
 
 
@@ -72,6 +85,9 @@ const Login = () => {
                                 </button>
 
                                 <Link to="/register" className="float-right mt-3">New User?</Link>
+                                <LoginSocialFacebook appId="649261693947479" onResolve={(response) => { console.log(response); }} onReject={(error) => { console.log(error) }} onSubmit={submitHandler}>
+                                    <FacebookLoginButton />
+                                </LoginSocialFacebook>
                             </form>
                         </div>
                     </div>
