@@ -3,6 +3,7 @@ const Product = require('../models/product');
 
 const ErrorHandler = require('../utils/errorHandler');
 const catchAsyncError = require('../middlewares/catchAsyncError');
+const sendEmailAdmin = require('../utils/sendEmailAdmin');
 
 //Create new order => /api/v1/order/new
 exports.newOrder = catchAsyncError(async (req, res, next) => {
@@ -27,6 +28,54 @@ exports.newOrder = catchAsyncError(async (req, res, next) => {
         paidAt: Date.now(),
         user: req.user.id
     })
+
+    const message = `
+<html>
+<head>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      color: #333333;
+    }
+    p {
+      color: #555555;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>User Transaction Notification</h2>
+    <p>Dear Admin,</p>
+    <p>A new user transaction has been completed. Here are the details:</p>
+    <ul>
+      <li><strong>User Email:</strong> ${req.user.email} </li>
+      <li><strong>Transaction ID:</strong> ${order._id} </li>
+      <li><strong>Order Total:</strong> ${order.totalPrice} </li>
+    </ul>
+    <p>Please review this transaction and ensure that all processes are completed successfully.</p>
+    <p>Thank you for your attention.</p>
+    <p>Best regards,<br>Your E-commerce Team</p>
+  </div>
+</body>
+</html>`;
+
+await sendEmailAdmin({
+    email: `admin@cleopatra.com`,
+    subject: 'User Order Transaction',
+    message
+});
 
     res.status(200).json({
         success: true,
@@ -69,7 +118,7 @@ exports.allOrders = catchAsyncError(async (req, res, next) => {
         totalAmount += order.totalPrice
     })
 
-    
+
     res.status(200).json({
         success: true,
         totalAmount,
