@@ -94,7 +94,7 @@ exports.getAdminProducts = catchAsyncErrors(async (req, res, next) => {
 });
 
 
-exports.updateProduct = async (req, res, next) => {
+exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
     let product = await Product.findById(req.params.id);
     console.log(req.body)
     if (!product) {
@@ -138,7 +138,7 @@ exports.updateProduct = async (req, res, next) => {
         success: true,
         product
     })
-}
+})
 
 
 //Get Single Product  => /api/v1/product/:id
@@ -363,7 +363,7 @@ exports.productSales = catchAsyncErrors( async (req, res, next) => {
 
         },
     ])
-    console.log(totalSales)
+    // console.log(totalSales)
     // const sales = await Order.aggregate([
     //     {
     //         $group: {

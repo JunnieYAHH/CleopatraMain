@@ -11,7 +11,7 @@ const cloudinary = require('cloudinary');
 
 exports.registerUser = catchAsyncError(async (req, res, next) => {
 
-    const result = await cloudinary.v2.uploader.upload(req.body.avatar,{
+    const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
         folder: 'Cleopatra/avatars',
         width: 150,
         crop: 'scale',
@@ -162,21 +162,45 @@ exports.updateProfile = catchAsyncError(async (req, res, next) => {
         email: req.body.email
     }
 
-    //Update avatar: TODO
+    // Update avatar
+    if (req.body.avatar !== '') {
+        const user = await User.findById(req.user.id)
+
+        const image_id = user.avatar.public_id;
+        const res = await cloudinary.v2.uploader.destroy(image_id);
+
+        const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
+            folder: 'Cleopatra/avatars',
+            width: 150,
+            crop: "scale"
+        })
+
+        newUserData.avatar = {
+            public_id: result.public_id,
+            url: result.secure_url
+        }
+    }
 
     const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
         new: true,
         runValidators: true,
-        useFindAndModify: false
     })
+    if (!user) {
+        return res.status(401).json({ message: 'User Not Updated' })
+    }
 
-    // res.status(200).json({
-    //     success: true
-    // })
-
-    sendToken(user, 200, res)
-
+    res.status(200).json({
+        success: true
+    })
 })
+
+exports.allUsers = async (req, res, next) => {
+    const users = await User.find();
+    res.status(200).json({
+        success: true,
+        users
+    })
+}
 
 
 // Logout User => /api/v1/Logout
@@ -208,8 +232,8 @@ exports.allUsers = catchAsyncError(async (req, res, next) => {
 exports.getUserDetails = catchAsyncError(async (req, res, next) => {
     const user = await User.findById(req.params.id);
 
-    if(!user){
-         return next(new ErrorHandler('User does not found with id:${req.params.id}'))
+    if (!user) {
+        return next(new ErrorHandler('User does not found with id:${req.params.id}'))
     }
 
     res.status(200).json({
@@ -220,44 +244,51 @@ exports.getUserDetails = catchAsyncError(async (req, res, next) => {
 
 //Update Current User Profile => /api/v1/admin/user/:id
 exports.updateUser = catchAsyncError(async (req, res, next) => {
-    try {
-        const newUserData = {
-            name: req.body.name,
-            email: req.body.email,
-            role: req.body.role
-        };
+    const newUserData = {
+        name: req.body.name,
+        email: req.body.email
+    }
 
-        // Check if a file is provided
-        if (req.files && req.files.length > 0) {
-            const result = await cloudinary.v2.uploader.upload(req.files[0].data, {
-                folder: 'users',
-                width: 150, // adjust width as needed
-                crop: 'scale',
-            });
-            newUserData.image = {
-                public_id: result.public_id,
-                url: result.secure_url,
-            };
+    // Update avatar
+    if (req.body.avatar !== '') {
+        const user = await User.findById(req.user.id);
+
+        // Check if the user has an avatar before trying to delete
+        if (user.avatar && user.avatar.public_id) {
+            // Delete the old avatar image
+            const image_id = user.avatar.public_id;
+            const deleteResult = await cloudinary.v2.uploader.destroy(image_id);
         }
 
-        const user = await User.findByIdAndUpdate(req.params.id, newUserData, {
-            new: true,
-            runValidators: true,
-            useFindAndModify: false
+        // Upload the new avatar image
+        const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
+            folder: 'Cleopatra/avatars',
+            width: 150,
+            crop: "scale"
         });
 
-        return res.status(200).json({
-            success: true,
-            user
-        });
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({
-            success: false,
-            message: 'Internal Server Error'
-        });
+        newUserData.avatar = {
+            public_id: result.public_id,
+            url: result.secure_url
+        }
     }
+
+    const updatedUser = await User.findByIdAndUpdate(req.user.id, newUserData, {
+        new: true,
+        runValidators: true,
+    });
+
+    if (!updatedUser) {
+        return res.status(401).json({ message: 'User Not Updated' });
+    }
+
+    res.status(200).json({
+        success: true,
+        user: updatedUser
+    });
 });
+
+
 
 
 // Delete user  => /api/v1/admin/user/:id
@@ -272,6 +303,7 @@ exports.deleteUser = catchAsyncError(async (req, res, next) => {
         success: true,
     });
 });
+
 exports.getSingleUser = catchAsyncError(async (req, res, next) => {
     const user = await User.findById(req.params.id);
 

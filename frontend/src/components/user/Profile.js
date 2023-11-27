@@ -14,9 +14,15 @@ const Profile = () => {
             <h2 className="mt-5 ml-5">My Profile</h2>
             <div className="row justify-content-around mt-5 user-info">
                 <div className="col-12 col-md-3">
-                    
+
                     <figure className='avatar avatar-profile'>
-                        <img className="rounded-circle img-fluid" src={user.avatar && user.avatar.url} alt={user.name} />
+                        {user.avatar && user.avatar.length > 0 && (
+                            <div className="avatar-array">
+                                {user.avatar.map((avatar, index) => (
+                                    <img key={index} src={avatar.url} alt={user.name} className="rounded-circle" />
+                                ))}
+                            </div>
+                        )}
                     </figure>
                     <Link to="/me/update" id="edit_profile" className="btn btn-primary btn-block my-5">
                         Edit Profile
@@ -38,9 +44,9 @@ const Profile = () => {
                         </Link>
                     )}
 
-                    <Link to="/password/update" className="btn btn-primary btn-block mt-3">
+                    {/* <Link to="/password/update" className="btn btn-primary btn-block mt-3">
                         Change Password
-                    </Link>
+                    </Link> */}
                 </div>
             </div>
 

@@ -22,16 +22,18 @@ const userSchema = new mongoose.Schema({
         minlength: [6, 'Password must be at least 6 characters long'],
         select: false,
     },
-    avatar: {
-        public_id: {
-            type: String,
-            required: true
-        },
-        url: {
-            type: String,
-            required: true
+    avatar: [
+        {
+            public_id: {
+                type: String,
+                required: true
+            },
+            url: {
+                type: String,
+                required: true
+            }
         }
-    },
+    ],
     role: {
         type: String,
         default: 'user'
@@ -45,8 +47,8 @@ const userSchema = new mongoose.Schema({
 });
 
 // Encrypting the Password
-userSchema.pre('save', async function (next){
-    if(!this.isModified('password')){
+userSchema.pre('save', async function (next) {
+    if (!this.isModified('password')) {
         next()
     }
 
@@ -59,8 +61,8 @@ userSchema.methods.comparePassword = async function (enteredPassword) {
 }
 
 //Return JWT TOKEN
-userSchema.methods.getJwtToken = function(){
-    return jwt.sign({id: this._id}, process.env.JWT_SECRET, {
+userSchema.methods.getJwtToken = function () {
+    return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRES_TIME
     })
 }

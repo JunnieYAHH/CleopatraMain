@@ -17,7 +17,7 @@ const ListReviews = ({ reviews, prod }) => {
     const [imagesPreview, setImagesPreview] = useState([]);
     const [errorReview, setErrorReview] = useState('');
     const [success, setSuccess] = useState('');
-    console.log(user.name)
+    // console.log(user.name)
     const navigate = useNavigate();
 
 

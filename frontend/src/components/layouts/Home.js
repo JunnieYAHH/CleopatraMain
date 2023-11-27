@@ -88,7 +88,6 @@ const Home = ({ match }) => {
                             style={{ width: '80%', height: '80%', objectFit: 'cover' }}
                         />
                     </Carousel.Item>
-                    {/* Add more Carousel.Item for additional images */}
                 </Carousel>
             </div>
             <div className='container'>

@@ -11,14 +11,15 @@ const Header = () => {
   const navigate = useNavigate();
 
   const user = JSON.parse(localStorage.getItem('user'));
-  const { cartItems } = useSelector(state => state.cart);
+  const cartItems = JSON.parse(localStorage.getItem('cartItems'));
+
 
   const logoutHandler = () => {
     localStorage.removeItem('token');
     sessionStorage.removeItem('token');
     localStorage.removeItem('user', user);
     navigate('/login')
- 
+
   }
 
   return (
@@ -38,7 +39,11 @@ const Header = () => {
                 {user && user.role !== 'admin' ? (
                   <Link to="/cart" style={{ textDecoration: 'none' }}>
                     <span id="cart" className="ml-3">  <i className="fa-solid fa-cart-shopping" style={{ color: '#000000' }}></i></span>
-                    <span className="ms-1" id="cart_count">{cartItems.length}</span>
+                    {cartItems && cartItems.length > 0 && cartItems.some(item => item.userId !== user._id) ? (
+                      <span className="ms-1" id="cart_count">0</span>
+                    ) : (
+                      <span className="ms-1" id="cart_count">{cartItems.length}</span>
+                    )}
                   </Link>
                 ) : (
                   <i class="fa-brands fa-creative-commons-by">A<span>dmin</span> </i>
@@ -48,8 +53,13 @@ const Header = () => {
                     type="button" id="dropDownMenuButton" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
                     <figure className="avatar avatar-nav">
-                      <img src={user.avatar && user.avatar.url} alt={user && user.name} className="rounded-circle" />
-                    </figure>
+                      {user.avatar && user.avatar.length > 0 && (
+                        <div className="avatar-array">
+                          {user.avatar.map((avatar, index) => (
+                            <img key={index} src={avatar.url} alt={user.name} className="rounded-circle" />
+                          ))}
+                        </div>
+                      )}                    </figure>
                     <span>{user && user.name}</span>
                   </Link>
                   <div className="dropdown-menu" aria-labelledby="dropDownMenuButton">
@@ -75,7 +85,7 @@ const Header = () => {
           </div>
         </div>
       </nav>
-    </Fragment>
+    </Fragment >
   )
 }
 

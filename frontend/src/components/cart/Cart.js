@@ -12,11 +12,13 @@ const Cart = () => {
     const user = JSON.parse(localStorage.getItem('user'));
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { cartItems } = useSelector(state => state.cart)
-    // const cartItems = JSON.parse(localStorage.getItem('cartItems'));
+    // const { cartItems } = useSelector(state => state.cart)
+    const cartItems = JSON.parse(localStorage.getItem('cartItems'));
     const isAuthenticated = localStorage.getItem('user')
     const [product, setProduct] = useState({})
     const [quantity1, setQuantity] = useState(0)
+    console.log(user._id)
+    console.log(cartItems.userId);
 
     const [state, setState] = useState({
         cartItems: localStorage.getItem('cartItems')
@@ -89,12 +91,11 @@ const Cart = () => {
     return (
         <Fragment>
             <MetaData title={'Your Cart'} />
-            {cartItems === null || cartItems.length === 0 ? (
+            {cartItems && cartItems.length > 0 && cartItems.some(item => item.userId !== user._id) ? (
                 <h2 className="mt-5">Your Cart is Empty</h2>
             ) : (
                 <Fragment>
                     <h2 className="mt-5">Your Cart: <b>{cartItems.length} items</b></h2>
-
                     <div className="row d-flex justify-content-between">
                         <div className="col-12 col-lg-8">
                             {cartItems.map(item => (
