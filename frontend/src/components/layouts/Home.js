@@ -71,24 +71,6 @@ const Home = ({ match }) => {
     return (
         <Fragment>
             <div className='container justify-content-center' style={{ maxWidth: '1000px', maxHeight: '600px', overflow: 'hidden' }}>
-                <Carousel style={{ width: '100%', height: '100%' }}>
-                    <Carousel.Item>
-                        <img
-                            className="d-block w-100"
-                            src="/Cpatra1.png"
-                            alt="firstSlide"
-                            style={{ width: '80%', height: '80%', objectFit: 'cover' }}
-                        />
-                    </Carousel.Item>
-                    <Carousel.Item>
-                        <img
-                            className="d-block w-100"
-                            src="/Cpatra2.png"
-                            alt="Second slide"
-                            style={{ width: '80%', height: '80%', objectFit: 'cover' }}
-                        />
-                    </Carousel.Item>
-                </Carousel>
             </div>
             <div className='container'>
                 {loading ? <Loader /> : (
