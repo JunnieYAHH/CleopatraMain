@@ -272,7 +272,7 @@ exports.deleteUser = catchAsyncError(async (req, res, next) => {
         success: true,
     });
 });
-exports.getSingleUser = catchAsyncErrors(async (req, res, next) => {
+exports.getSingleUser = catchAsyncError(async (req, res, next) => {
     const user = await user.findById(req.params.id);
 
     if (!user) {
