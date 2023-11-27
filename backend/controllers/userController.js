@@ -274,9 +274,11 @@ exports.deleteUser = catchAsyncError(async (req, res, next) => {
 });
 exports.getSingleUser = catchAsyncError(async (req, res, next) => {
     const user = await user.findById(req.params.id);
+exports.getSingleUser = catchAsyncError(async (req, res, next) => {
+    const user = await User.findById(req.params.id);
 
     if (!user) {
-        return next(new ErrorHandler('User not found', 404));
+        return next(new ErrorHandler('user not found', 404));
     }
 
 
