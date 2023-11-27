@@ -220,23 +220,44 @@ exports.getUserDetails = catchAsyncError(async (req, res, next) => {
 
 //Update Current User Profile => /api/v1/admin/user/:id
 exports.updateUser = catchAsyncError(async (req, res, next) => {
-    const newUserData = {
-        name: req.body.name,
-        email: req.body.email,
-        role: req.body.role
+    try {
+        const newUserData = {
+            name: req.body.name,
+            email: req.body.email,
+            role: req.body.role
+        };
+
+        // Check if a file is provided
+        if (req.files && req.files.length > 0) {
+            const result = await cloudinary.v2.uploader.upload(req.files[0].data, {
+                folder: 'users',
+                width: 150, // adjust width as needed
+                crop: 'scale',
+            });
+            newUserData.image = {
+                public_id: result.public_id,
+                url: result.secure_url,
+            };
+        }
+
+        const user = await User.findByIdAndUpdate(req.params.id, newUserData, {
+            new: true,
+            runValidators: true,
+            useFindAndModify: false
+        });
+
+        return res.status(200).json({
+            success: true,
+            user
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: 'Internal Server Error'
+        });
     }
-
-    const user = await User.findByIdAndUpdate(req.params.id, newUserData, {
-        new: true,
-        runValidators: true,
-        useFindAndModify: false
-    })
-
-    res.status(200).json({
-        success: true
-    })
-
-})
+});
 
 
 // Delete user  => /api/v1/admin/user/:id

@@ -42,72 +42,72 @@ import ProtectedRoute from './components/route/ProtectedRoute';
 
 function App() {
 
-    const [state, setState] = useState({
-      cartItems: localStorage.getItem('cartItems')
-        ? JSON.parse(localStorage.getItem('cartItems'))
-        : [],
-      shippingInfo: localStorage.getItem('shippingInfo')
-        ? JSON.parse(localStorage.getItem('shippingInfo'))
-        : {},
+  const [state, setState] = useState({
+    cartItems: localStorage.getItem('cartItems')
+      ? JSON.parse(localStorage.getItem('cartItems'))
+      : [],
+    shippingInfo: localStorage.getItem('shippingInfo')
+      ? JSON.parse(localStorage.getItem('shippingInfo'))
+      : {},
+  })
+
+  const saveShippingInfo = async (data) => {
+    setState({
+      ...state,
+      shippingInfo: data
     })
-
-    const saveShippingInfo = async (data) => {
-      setState({
-        ...state,
-        shippingInfo: data
-      })
-      localStorage.setItem('shippingInfo', JSON.stringify(data))
-    }
-    return (
-      <Router>
-        <div className="App">
-          <div className="container">
-            <Header />
-          </div>
-          <div className="container container-fluid">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/search/:keyword" element={<Home />} />
-              <Route path="/product/:id" element={<ProductDetails cartItems={state.cartItems} />} exact="true" />
-
-              <Route path="/cart" element={<ProtectedRoute element={Cart} />} />
-              <Route path="/shipping" element={<Shipping shipping={state.shippingInfo} saveShippingInfo={saveShippingInfo} />} />
-              <Route path="/order/confirm" element={<ProtectedRoute element={ConfirmOrder} />} />
-              <Route path="/payment" element={<Payment shippingInfo={state.shippingInfo} />} />
-              <Route path="/success" element={<OrderSuccess />} />
-              <Route path="/orders/me" element={<ListOrders />} />
-              <Route path="/order/:id" element={<OrderDetails />} />
-
-
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              {/* Route for /me, using ProtectedRoute */}
-              <Route path="/me" element={<ProtectedRoute element={Profile} />} />
-              <Route path="/me/update" element={<ProtectedRoute element={UpdateProfile} isAdmin={true} />} />
-              <Route path="/dashboard" element={<ProtectedRoute element={Dashboard} isAdmin={true} />} />
-              {/* Product Routes */}
-              <Route path="/admin/products" element={<ProtectedRoute element={ProductsList} isAdmin={true} />} />
-              <Route path="/admin/product" element={<ProtectedRoute element={CreateProduct} isAdmin={true} />} />
-              <Route path="/admin/product/:id" element={<ProtectedRoute element={UpdateProduct} isAdmin={true} />} />
-              <Route path="/admin/getprod/:id" element={<ProtectedRoute element={AdminProductDetails} isAdmin={true} />} />
-              {/* Category Routes */}
-              <Route path="/admin/category" element={<ProtectedRoute element={CreateCategory} isAdmin={true} />} />
-              <Route path="/admin/categories" element={<ProtectedRoute element={CategoryList} isAdmin={true} />} />
-              <Route path="/admin/category/:id" element={<ProtectedRoute element={UpdateCategory} isAdmin={true} />} />
-              {/* Order Routes */}
-              <Route path="/admin/orders" element={<ProtectedRoute element={OrdersList} isAdmin={true} />} />
-              <Route path="/admin/order/:id" element={<ProtectedRoute element={ProcessOrder} isAdmin={true} />} />
-              {/* User Routes */}
-              <Route path="/admin/users" element={<ProtectedRoute element={UsersList} isAdmin={true} />} />
-              <Route path="/admin/user/:id" element={<ProtectedRoute element={UpdateUser} isAdmin={true} />} />
-              <Route path="/admin/reviews" element={<ProtectedRoute element={ProductReviews} isAdmin={true} />} />
-
-            </Routes>
-          </div>
-          <Footer />
-        </div>
-      </Router>
-    );
+    localStorage.setItem('shippingInfo', JSON.stringify(data))
   }
+  return (
+    <Router>
+      <div className="App">
+        <div className="container">
+          <Header />
+        </div>
+        <div className="container container-fluid">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/search/:keyword" element={<Home />} />
+            <Route path="/product/:id" element={<ProductDetails cartItems={state.cartItems} />} exact="true" />
+
+            <Route path="/cart" element={<ProtectedRoute element={Cart} />} />
+            <Route path="/shipping" element={<Shipping shipping={state.shippingInfo} saveShippingInfo={saveShippingInfo} />} />
+            <Route path="/order/confirm" element={<ProtectedRoute element={ConfirmOrder} />} />
+            <Route path="/payment" element={<Payment shippingInfo={state.shippingInfo} />} />
+            <Route path="/success" element={<OrderSuccess />} />
+            <Route path="/orders/me" element={<ListOrders />} />
+            <Route path="/order/:id" element={<OrderDetails />} />
+
+
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            {/* Route for /me, using ProtectedRoute */}
+            <Route path="/me" element={<ProtectedRoute element={Profile} />} />
+            <Route path="/me/update" element={<ProtectedRoute element={UpdateProfile} />} />
+            <Route path="/dashboard" element={<ProtectedRoute element={Dashboard} isAdmin={true} />} />
+            {/* Product Routes */}
+            <Route path="/admin/products" element={<ProtectedRoute element={ProductsList} isAdmin={true} />} />
+            <Route path="/admin/product" element={<ProtectedRoute element={CreateProduct} isAdmin={true} />} />
+            <Route path="/admin/product/:id" element={<ProtectedRoute element={UpdateProduct} isAdmin={true} />} />
+            <Route path="/admin/getprod/:id" element={<ProtectedRoute element={AdminProductDetails} isAdmin={true} />} />
+            {/* Category Routes */}
+            <Route path="/admin/category" element={<ProtectedRoute element={CreateCategory} isAdmin={true} />} />
+            <Route path="/admin/categories" element={<ProtectedRoute element={CategoryList} isAdmin={true} />} />
+            <Route path="/admin/category/:id" element={<ProtectedRoute element={UpdateCategory} isAdmin={true} />} />
+            {/* Order Routes */}
+            <Route path="/admin/orders" element={<ProtectedRoute element={OrdersList} isAdmin={true} />} />
+            <Route path="/admin/order/:id" element={<ProtectedRoute element={ProcessOrder} isAdmin={true} />} />
+            {/* User Routes */}
+            <Route path="/admin/users" element={<ProtectedRoute element={UsersList} isAdmin={true} />} />
+            <Route path="/admin/user/:id" element={<ProtectedRoute element={UpdateUser} isAdmin={true} />} />
+            <Route path="/admin/reviews" element={<ProtectedRoute element={ProductReviews} isAdmin={true} />} />
+
+          </Routes>
+        </div>
+        <Footer />
+      </div>
+    </Router>
+  );
+}
 
 export default App;

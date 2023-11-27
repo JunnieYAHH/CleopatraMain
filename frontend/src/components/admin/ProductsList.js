@@ -8,6 +8,7 @@ import Sidebar from './Sidebar'
 import axios from 'axios'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ProductSalesChart from './charts/productSalesChart';
 
 const ProductsList = () => {
 
@@ -152,10 +153,12 @@ const ProductsList = () => {
                 <div className="col-12 col-md-2">
                     <Sidebar />
                 </div>
-
-                <div className="col-12 col-md-10">
+                <div className="col-12 col-md-10" style={{ backgroundColor: 'gray' }}>
                     <Fragment>
-                        <h1 className="my-5">All Products</h1>
+                        <h1 className="my-5 " style={{ justifyItems: 'center' }}> All Products</h1>
+                        <div className="col-12 col-md-100 justify-content-end" style={{ width: '100%' }}>
+                            <ProductSalesChart />
+                        </div>
 
                         {loading ? <Loader /> : (
                             <MDBDataTable
@@ -164,14 +167,18 @@ const ProductsList = () => {
                                 bordered
                                 striped
                                 hover
+                                style={{
+                                    backgroundColor: '#f8f9fa', // Change the background color
+                                    border: '1px solid #dee2e6', // Change the border color
+                                    borderRadius: '8px', // Add border-radius
+                                }}
                             />
                         )}
 
                     </Fragment>
                 </div>
             </div>
-
-        </Fragment>
+        </Fragment >
     )
 }
 

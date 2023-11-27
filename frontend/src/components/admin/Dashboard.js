@@ -6,8 +6,12 @@ import Loader from '../layouts/Loader'
 import Sidebar from './Sidebar'
 import axios from 'axios'
 import 'react-toastify/dist/ReactToastify.css';
+
+import MonthlySalesChart from './charts/monthlySalesChart';
+
 const Dashboard = () => {
     const token = localStorage.getItem('token');
+    // const [mSales, setMonthlySales] = useState('')
     const [products, setProducts] = useState([])
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(true)
@@ -28,7 +32,6 @@ const Dashboard = () => {
             }
 
             const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/admin/products`, config)
-            console.log(data)
             setProducts(data.products)
             setLoading(false)
         } catch (error) {
@@ -39,9 +42,30 @@ const Dashboard = () => {
 
     useEffect(() => {
         getAdminProducts()
-        // allOrders()
-        // allUsers()
     }, [])
+
+    // const monthlySales = async () => {
+    //     try {
+    //         const config = {
+    //             headers: {
+    //                 'Content-Type': 'multipart/form-data',
+    //                 'Authorization': `Bearer ${token}`
+    //             }
+    //         }
+
+    //         const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/admin/monthlySales`, config)
+    //         setMonthlySales(data.salesPerMonth)
+    //         setLoading(false)
+
+    //     } catch (error) {
+    //         setError(error.response.data.message)
+    //     }
+    // }
+    // useEffect(() => {
+    //     monthlySales()
+
+    // }, [])
+
 
     return (
         <Fragment>
@@ -73,28 +97,16 @@ const Dashboard = () => {
                                 </div>
                                 <div className="col-xl-3 col-sm-6 mb-3">
                                     <div className="card text-white bg-danger o-hidden h-100">
-
-                                        {/* <div className="card-body">
-                                            <div className="text-center card-font-size">Orders<br /> <b>{orders && orders.length}</b></div>
-                                        </div> */}
-
                                         <Link className="card-footer text-white clearfix small z-1" to="/admin/orders">
-                                            <span className="float-left">View Details</span>
-                                            <span className="float-right">
-                                                <i className="fa fa-angle-right"></i>
-                                            </span>
+                                            <div className="card-body">
+                                                {/* <div className="text-center card-font-size">monthlySales<br /> <b>{mSales}</b></div> */}
+                                            </div>
                                         </Link>
                                     </div>
                                 </div>
 
-
                                 <div className="col-xl-3 col-sm-6 mb-3">
                                     <div className="card text-white bg-info o-hidden h-100">
-
-                                        {/* <div className="card-body">
-                                            <div className="text-center card-font-size">Users<br /> <b>{users && users.length}</b></div>
-                                        </div> */}
-
                                         <Link className="card-footer text-white clearfix small z-1" to="/admin/users">
                                             <span className="float-left">View Details</span>
                                             <span className="float-right">
@@ -105,10 +117,6 @@ const Dashboard = () => {
                                 </div>
                                 <div className="col-xl-3 col-sm-6 mb-3">
                                     <div className="card text-white bg-warning o-hidden h-100">
-                                        {/*<div className="card-body">
-                                            <div className="text-center card-font-size">Out of Stock<br /> <b>0</b></div>
-                                        </div>*/}
-
                                         <div className="card-body">
                                             <div className="text-center card-font-size">Out of Stock<br /> <b>{outOfStock}</b></div>
                                         </div>
@@ -117,16 +125,8 @@ const Dashboard = () => {
                             </div>
                         </Fragment>
                     )}
-                </div>
-                {/* <Fragment>
-                    <UserSalesChart />
-                </Fragment>
-                <Fragment>
                     <MonthlySalesChart />
-                </Fragment>
-                <Fragment>
-                    <ProductSalesChart />
-                </Fragment> */}
+                </div>
             </div>
         </Fragment >
     )

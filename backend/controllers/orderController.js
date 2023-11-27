@@ -71,11 +71,11 @@ exports.newOrder = catchAsyncError(async (req, res, next) => {
 </body>
 </html>`;
 
-await sendEmailAdmin({
-    email: `admin@cleopatra.com`,
-    subject: 'User Order Transaction',
-    message
-});
+    await sendEmailAdmin({
+        email: `admin@cleopatra.com`,
+        subject: 'User Order Transaction',
+        message
+    });
 
     res.status(200).json({
         success: true,
@@ -169,3 +169,119 @@ exports.deleteOrder = catchAsyncError(async (req, res, next) => {
         order
     })
 })
+
+exports.monthlySales = catchAsyncError(async (req, res, next) => {
+    const salesPerMonth = await Order.aggregate([
+
+        {
+            $group: {
+                // _id: {month: { $month: "$paidAt" } },
+                _id: {
+                    year: { $year: "$paidAt" },
+                    month: { $month: "$paidAt" }
+                },
+                total: { $sum: "$totalPrice" },
+            },
+        },
+
+        {
+            $addFields: {
+                month: {
+                    $let: {
+                        vars: {
+                            monthsInString: [, 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', ' Sept', 'Oct', 'Nov', 'Dec']
+                        },
+                        in: {
+                            $arrayElemAt: ['$$monthsInString', "$_id.month"]
+                        }
+                    }
+                }
+            }
+        },
+        { $sort: { "_id.month": 1 } },
+        {
+            $project: {
+                _id: 0,
+                month: 1,
+                total: 1,
+            }
+        }
+
+    ])
+    if (!salesPerMonth) {
+        return res.status(404).json({
+            message: 'error sales per month',
+        })
+    }
+    // return console.log(customerSales)
+    res.status(200).json({
+        success: true,
+        salesPerMonth
+    })
+})
+
+exports.getOrderSales = catchAsyncError(async (req, res, next) => {
+    try {
+        const salesPerMonth = await Order.aggregate([
+            {
+                $match: {
+                    paidAt: { $ne: null } // Assuming you want to filter out orders without a paidAt date
+                }
+            },
+            {
+                $group: {
+                    _id: {
+                        year: { $year: "$paidAt" },
+                        month: { $month: "$paidAt" }
+                    },
+                    total: { $sum: "$totalPrice" },
+                },
+            },
+            {
+                $addFields: {
+                    month: {
+                        $let: {
+                            vars: {
+                                monthsInString: [null, 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
+                            },
+                            in: {
+                                $arrayElemAt: ['$$monthsInString', "$_id.month"]
+                            }
+                        }
+                    }
+                }
+            },
+            { $sort: { "_id.year": 1, "_id.month": 1 } },
+            {
+                $project: {
+                    _id: 0,
+                    month: 1,
+                    total: 1,
+                }
+            }
+        ]);
+
+        if (!salesPerMonth) {
+            return res.status(404).json({
+                message: 'Error fetching sales per month',
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            salesPerMonth
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+//New chart
+
+// exports.productOrderSales = catchAsyncErrors(async (req, res, next) => {
+ 
+// });
