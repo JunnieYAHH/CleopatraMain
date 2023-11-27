@@ -9,10 +9,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux';
 
-const AdminProductDetails = () => {
+const AdminUserDetails = () => {
 
     const [loading, setLoading] = useState(true)
-    const [user, setProduct] = useState({})
+    const [user, setUser] = useState({})
     const [error, setError] = useState('')
     // const [quantity, setQuantity] = useState(0)
     const [errorReview, setErrorReview] = useState('');
@@ -30,7 +30,7 @@ const AdminProductDetails = () => {
 
     let { id } = useParams()
 
-    const getAdminProducts = async (id) => {
+    const getAdminUser = async (id) => {
         try {
 
             const config = {
@@ -40,7 +40,7 @@ const AdminProductDetails = () => {
                 }
             }
 
-            const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/admin/product/${id}`, config)
+            const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/admin/user/${id}`, config)
             console.log(data)
             setUser(data.user)
             setLoading(false)
@@ -53,9 +53,9 @@ const AdminProductDetails = () => {
 
 
     useEffect(() => {
-        getAdminProducts(id)
+        getAdminUser(id)
         if (success) {
-            successMsg('Product get successfully')
+            successMsg('User get successfully')
             setSuccess(false)
 
         }
@@ -65,20 +65,20 @@ const AdminProductDetails = () => {
         <Fragment>
             {loading ? <Loader /> : (
                 <Fragment>
-                    <MetaData title={product.name} />
+                    <MetaData title={user.name} />
                     <div className="row d-flex justify-content-around">
                         <div className="container col-18 border p-4 mt-4">
                             <div className="row">
-                                <div className="col-5 col-lg-5 img-fluid" id="product_image">
+                                <div className="col-5 col-lg-5 img-fluid" id="user_image">
                                     <div style={{ display: 'flex', flexDirection: 'column', backgroundColor: 'gray', borderRadius: '8px' }}>
 
                                         <Carousel pause='hover'>
-                                            {product.images && product.images.map(image => (
+                                            {user.images && user.images.map(image => (
                                                 <Carousel.Item key={image.public_id}>
                                                     <img
                                                         className="d-block w-100"
                                                         src={image.url}
-                                                        alt={product.title}
+                                                        alt={user.name}
                                                         style={{ borderRadius: '8px' }}
                                                     />
                                                 </Carousel.Item>
@@ -86,7 +86,7 @@ const AdminProductDetails = () => {
                                         </Carousel>
                                         <br />
                                         <br />
-                                        <h4 style={{ color: 'white' }}>Product # {product._id}</h4>
+                                        <h4 style={{ color: 'white' }}>User # {user._id}</h4>
                                         <br />
                                         <br />
                                     </div>
@@ -96,32 +96,14 @@ const AdminProductDetails = () => {
                                     <div className='col-12 mt-4 border p-4' style={{ background: 'black' }}>
                                         <div className='col-12 mt-4 border p-4' style={{ background: 'gray' }}>
 
-                                            <h3>{product.name}</h3>
+                                            <h3>{user.name}</h3>
 
+                            
+
+                                            <h4 className="mt-2">Role:</h4>
+                                            <p>{user.role}</p>
                                             <hr />
-
-                                            <div className="rating-outer">
-                                                <div className="rating-inner" style={{ width: `${(product.ratings / 5) * 100}%` }}></div>
-                                            </div>
-                                            <span id="no_of_reviews" style={{ color: 'black' }}>({product.numOfReviews} Reviews)</span>
-
-                                            <hr />
-
-                                            <p id="product_price">${product.price}</p>
-                                            <div className="stockCounter d-inline">
-                                                <input type="number" className="form-control count d-inline" value={product.quantity} readOnly />
-                                            </div>
-
-                                            <hr />
-
-                                            <p>Status: <span id="stock_status" className={product.stock > 0 ? 'greenColor' : 'redColor'} >{product.stock > 0 ? 'In Stock' : 'Out of Stock'}</span></p>
-
-                                            <hr />
-
-                                            <h4 className="mt-2">Description:</h4>
-                                            <p>{product.description}</p>
-                                            <hr />
-                                            <p id="product_seller mb-3">Sold by: <strong>{product.seller}</strong></p>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -134,4 +116,4 @@ const AdminProductDetails = () => {
     )
 
 }
-export default AdminProductDetails
+export default AdminUserDetails

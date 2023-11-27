@@ -26,6 +26,7 @@ import OrdersList from './components/admin/OrdersList';
 import ProcessOrder from './components/admin/ProcessOrder';
 import UsersList from './components/admin/UsersList';
 import UpdateUser from './components/admin/UpdateUser';
+import AdminUserDetails from './components/admin/UserDetails';
 import ProductReviews from './components/admin/ProductReviews';
 import UpdateProduct from './components/admin/UpdateProduct';
 import CreateCategory from './components/admin/CreateCategory';
@@ -102,6 +103,7 @@ function App() {
             {/* User Routes */}
             <Route path="/admin/users" element={<ProtectedRoute element={UsersList} isAdmin={true} />} />
             <Route path="/admin/user/:id" element={<ProtectedRoute element={UpdateUser} isAdmin={true} />} />
+            <Route path="/admin/getUser/:id" element={<ProtectedRoute element={AdminUserDetails} isAdmin={true} />} />
             <Route path="/admin/reviews" element={<ProtectedRoute element={ProductReviews} isAdmin={true} />} />
 
           </Routes>
