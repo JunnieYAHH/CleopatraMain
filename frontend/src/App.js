@@ -30,6 +30,7 @@ import ProductReviews from './components/admin/ProductReviews';
 import UpdateProduct from './components/admin/UpdateProduct';
 import CreateCategory from './components/admin/CreateCategory';
 import CategoryList from './components/admin/CategoryList';
+import AdminCategoryDetails from './components/admin/CategoryDetails';
 import UpdateCategory from './components/admin/UpdateCategory';
 
 // auth user
@@ -51,24 +52,24 @@ function App() {
       : {},
   })
 
-  const saveShippingInfo = async (data) => {
-    setState({
-      ...state,
-      shippingInfo: data
-    })
-    localStorage.setItem('shippingInfo', JSON.stringify(data))
-  }
-  return (
-    <Router>
-      <div className="App">
-        <div className="container">
-          <Header />
-        </div>
-        <div className="container container-fluid">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/search/:keyword" element={<Home />} />
-            <Route path="/product/:id" element={<ProductDetails cartItems={state.cartItems} />} exact="true" />
+    const saveShippingInfo = async (data) => {
+      setState({
+        ...state,
+        shippingInfo: data
+      })
+      localStorage.setItem('shippingInfo', JSON.stringify(data))
+    }
+    return (
+      <Router>
+        <div className="App">
+          <div className="container">
+            <Header />
+          </div>
+          <div className="container container-fluid">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/search/:keyword" element={<Home />} />
+              <Route path="/product/:id" element={<ProductDetails cartItems={state.cartItems} />} exact="true" />
 
             <Route path="/cart" element={<ProtectedRoute element={Cart} />} />
             <Route path="/shipping" element={<Shipping shipping={state.shippingInfo} saveShippingInfo={saveShippingInfo} />} />
@@ -94,6 +95,7 @@ function App() {
             <Route path="/admin/category" element={<ProtectedRoute element={CreateCategory} isAdmin={true} />} />
             <Route path="/admin/categories" element={<ProtectedRoute element={CategoryList} isAdmin={true} />} />
             <Route path="/admin/category/:id" element={<ProtectedRoute element={UpdateCategory} isAdmin={true} />} />
+            <Route path="/admin/categor/:id" element={<ProtectedRoute element={AdminCategoryDetails} isAdmin={true} />} />
             {/* Order Routes */}
             <Route path="/admin/orders" element={<ProtectedRoute element={OrdersList} isAdmin={true} />} />
             <Route path="/admin/order/:id" element={<ProtectedRoute element={ProcessOrder} isAdmin={true} />} />

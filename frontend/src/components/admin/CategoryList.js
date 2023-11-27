@@ -119,6 +119,9 @@ const CategoriesList = () => {
                         <Link to={`/admin/category/${category._id}`} className="btn btn-primary py-1 px-2">
                             <i className="fa fa-pencil"></i>
                         </Link>
+                        <Link to={`/admin/categor/${category._id}`} className="btn btn-primary py-1 px-2">
+                        <i class="fa-regular fa-eye"></i>
+                    </Link>
                         <button className="btn btn-danger py-1 px-2 ml-2" onClick={() => deleteCategoryHandler(category._id)}>
                             <i className="fa fa-trash"></i>
                         </button>
