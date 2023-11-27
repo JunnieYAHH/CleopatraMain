@@ -73,6 +73,7 @@ exports.getSingleCategory = catchAsyncErrors(async (req, res, next) => {
     })
 })
 
+
 exports.updateCategory = catchAsyncErrors(async (req, res, next) => {
     try {
         let category = await Category.findById(req.params.id);
@@ -128,3 +129,16 @@ exports.updateCategory = catchAsyncErrors(async (req, res, next) => {
         });
     }
 });
+
+//Delete Category =>  /api/v1/admin/product/id
+exports.deleteCategory = catchAsyncErrors(async (req, res, next) => {
+    const category = await Category.findByIdAndDelete(req.params.id);
+    if (!category) {
+        return next(new ErrorHandler('Product not found', 404));
+    }
+    res.status(200).json({
+        success: true,
+        message: 'Category is Deleted.'
+    })
+
+})
