@@ -1,8 +1,6 @@
-import axios from 'axios'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ProductDetails from './components/products/productDetails';
-import { toast, ToastContainer } from 'react-toastify';
 
 //Layouts
 import Header from './components/layouts/Header';
@@ -18,16 +16,21 @@ import Payment from './components/cart/Payment'
 import OrderSuccess from './components/cart/OrderSuccess'
 import ListOrders from './components/orders/ListOrders'
 import OrderDetails from './components/orders/OrderDetails'
-// admin imports
+
+// admin routes
 import Dashboard from './components/admin/Dashboard';
 import CreateProduct from './components/admin/CreateProduct';
 import ProductsList from './components/admin/ProductsList';
+import AdminProductDetails from './components/admin/AdminProductDetails';
 import OrdersList from './components/admin/OrdersList';
 import ProcessOrder from './components/admin/ProcessOrder';
 import UsersList from './components/admin/UsersList';
 import UpdateUser from './components/admin/UpdateUser';
 import ProductReviews from './components/admin/ProductReviews';
 import UpdateProduct from './components/admin/UpdateProduct';
+import CreateCategory from './components/admin/CreateCategory';
+import CategoryList from './components/admin/CategoryList';
+import UpdateCategory from './components/admin/UpdateCategory';
 
 // auth user
 import Login from './components/user/Login';
@@ -47,46 +50,6 @@ function App() {
         ? JSON.parse(localStorage.getItem('shippingInfo'))
         : {},
     })
-
-    
-    // const addItemToCart = async (id, quantity) => {
-    //     console.log('This is the pakening id', id)
-    //     try {
-    //         const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/product/${id}`)
-    //         const item = {
-    //             product: data.product._id,
-    //             name: data.product.name,
-    //             price: data.product.price,
-    //             image: data.product.images[0].url,
-    //             stock: data.product.stock,
-    //             quantity: quantity
-    //         }
-
-    //         const isItemExist = state.cartItems.find(i => i.product === item.product)
-    //         console.log(isItemExist, state)
-    //         if (isItemExist) {
-    //             setState({
-    //                 ...state,
-    //                 cartItems: state.cartItems.map(i => i.product === isItemExist.product ? item : i)
-    //             })
-    //         }
-    //         else {
-    //             setState({
-    //                 ...state,
-    //                 cartItems: [...state.cartItems, item]
-    //             })
-    //         }
-
-    //         toast.success('Item Added to Cart', {
-    //             position: toast.POSITION.BOTTOM_RIGHT
-    //         })
-
-    //     } catch (error) {
-    //         toast.error(error, {
-    //             position: toast.POSITION.TOP_LEFT
-    //         });
-    //     }
-    // }
 
     const saveShippingInfo = async (data) => {
       setState({
@@ -122,14 +85,22 @@ function App() {
               <Route path="/me" element={<ProtectedRoute element={Profile} />} />
               <Route path="/me/update" element={<ProtectedRoute element={UpdateProfile} isAdmin={true} />} />
               <Route path="/dashboard" element={<ProtectedRoute element={Dashboard} isAdmin={true} />} />
+              {/* Product Routes */}
               <Route path="/admin/products" element={<ProtectedRoute element={ProductsList} isAdmin={true} />} />
               <Route path="/admin/product" element={<ProtectedRoute element={CreateProduct} isAdmin={true} />} />
+              <Route path="/admin/product/:id" element={<ProtectedRoute element={UpdateProduct} isAdmin={true} />} />
+              <Route path="/admin/getprod/:id" element={<ProtectedRoute element={AdminProductDetails} isAdmin={true} />} />
+              {/* Category Routes */}
+              <Route path="/admin/category" element={<ProtectedRoute element={CreateCategory} isAdmin={true} />} />
+              <Route path="/admin/categories" element={<ProtectedRoute element={CategoryList} isAdmin={true} />} />
+              <Route path="/admin/category/:id" element={<ProtectedRoute element={UpdateCategory} isAdmin={true} />} />
+              {/* Order Routes */}
               <Route path="/admin/orders" element={<ProtectedRoute element={OrdersList} isAdmin={true} />} />
               <Route path="/admin/order/:id" element={<ProtectedRoute element={ProcessOrder} isAdmin={true} />} />
+              {/* User Routes */}
               <Route path="/admin/users" element={<ProtectedRoute element={UsersList} isAdmin={true} />} />
               <Route path="/admin/user/:id" element={<ProtectedRoute element={UpdateUser} isAdmin={true} />} />
               <Route path="/admin/reviews" element={<ProtectedRoute element={ProductReviews} isAdmin={true} />} />
-              <Route path="/admin/product/:id" element={<ProtectedRoute element={UpdateProduct} isAdmin={true} />} />
 
             </Routes>
           </div>

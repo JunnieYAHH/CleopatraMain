@@ -14,8 +14,8 @@ const ProductsList = () => {
     const [products, setProducts] = useState([])
     const [error, setError] = useState('')
     const [deleteError, setDeleteError] = useState('')
-    const [users, setUsers] = useState([])
-    const [orders, setOrders] = useState([])
+    // const [users, setUsers] = useState([])
+    // const [orders, setOrders] = useState([])
     const [loading, setLoading] = useState(true)
     const [isDeleted, setIsDeleted] = useState(false)
     const token = localStorage.getItem('token');
@@ -127,6 +127,9 @@ const ProductsList = () => {
                 actions: <Fragment>
                     <Link to={`/admin/product/${product._id}`} className="btn btn-primary py-1 px-2">
                         <i className="fa fa-pencil"></i>
+                    </Link>
+                    <Link to={`/admin/getprod/${product._id}`} className="btn btn-primary py-1 px-2">
+                        <i class="fa-regular fa-eye"></i>
                     </Link>
                     <button className="btn btn-danger py-1 px-2 ml-2" onClick={() => deleteProductHandler(product._id)}>
                         <i className="fa fa-trash"></i>

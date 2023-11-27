@@ -5,9 +5,6 @@ import { useNavigate } from 'react-router-dom'
 import Search from './Search'
 import '../../App.css'
 
-//Google Login
-import { LoginSocialFacebook } from 'reactjs-social-login'
-import { FacebookLoginButton } from 'react-social-login-buttons'
 
 const Header = () => {
 
@@ -28,9 +25,6 @@ const Header = () => {
     <Fragment>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container">
-          {/* <LoginSocialFacebook appId="649261693947479" onResolve={(response) => {console.log(response);}} onReject={(error) => {console.log(error)}}>
-            <FacebookLoginButton/>
-          </LoginSocialFacebook> */}
           <a className="navbar-brand" href="/">
             <Link to="/">
               <img src="../../images/CleopatraLogo.png" alt="Logo" style={{ width: '150px', height: '75px', borderRadius: '25%' }} />
