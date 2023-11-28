@@ -4,6 +4,11 @@ const Product = require('../models/product');
 const ErrorHandler = require('../utils/errorHandler');
 const catchAsyncError = require('../middlewares/catchAsyncError');
 const sendEmailAdmin = require('../utils/sendEmailAdmin');
+const nodemailer = require('nodemailer');
+const PDFDocument = require('pdfkit');
+//const PDFDocument = require('pdfkit');
+
+
 
 //Create new order => /api/v1/order/new
 exports.newOrder = catchAsyncError(async (req, res, next) => {
@@ -135,6 +140,10 @@ exports.processOrders = catchAsyncError(async (req, res, next) => {
 
     }
 
+    if (order.orderStatus === 'Delivered'){
+        sendEmailToCustomer(order)
+    }
+
     order.orderItems.forEach(async item => {
         await updateStock(item.product, item.quantity)
     })
@@ -147,6 +156,115 @@ exports.processOrders = catchAsyncError(async (req, res, next) => {
         success: true,
     })
 })
+
+// Send Email customer
+async function sendEmailToCustomer(order) {
+
+    const transporter = nodemailer.createTransport({
+        host: 'sandbox.smtp.mailtrap.io',
+        port: 2525,
+        secure: false,
+        auth: {
+            user: '47a96f3576ec6e',
+            pass: 'c3b43750d9bbaf',
+        },
+    });
+
+    const pdfContent = await generateOrderPDF(order);
+
+    const mailOptions = {
+        from: 'maximumeffort2002@gmail.com',
+        to: 'christian.paningbatan@tup.edu.ph',
+        subject: 'Your Order has been Delivered',
+        text: `Your order with ID ${order._id} has been delivered. Please prepare for the exact amount of ₱${order.totalPrice.toFixed(2)}. Enjoy!`,
+        attachments: [
+            {
+                filename: 'receipt.pdf',
+                content: pdfContent,
+                encoding: 'base64',
+            },
+        ],
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.error('Error sending email to customer:', error);
+        } else {
+            console.log('Email sent to customer:', info.response);
+        }
+    });
+}
+
+//generateOrder
+async function generateOrderPDF(order) {
+    return new Promise(async (resolve, reject) => {
+        const doc = new PDFDocument();
+
+        doc.fontSize(18).text('JSON Brews Order Receipt', { align: 'center' });
+        doc.fontSize(12).text('1633, Taguig City, Metro Manila, Philippines', { align: 'center' });
+        doc.moveDown();
+
+        doc.fontSize(15).text('------------------------------------------------------------------', { align: 'center' });
+        doc.fontSize(15).text('CASH RECEIPT', { align: 'center' });
+        doc.fontSize(15).text('------------------------------------------------------------------', { align: 'center' });
+
+
+        doc.fontSize(14).text('Ordered Products:', { align: 'center' });
+        order.orderItems.forEach(item => {
+            const productText = ` ${item.name} (₱${item.price.toFixed(2)} each) x ${item.quantity}`;
+            doc.text(productText, { align: 'center' });
+        });
+        doc.moveDown();
+
+        doc.fontSize(12).text(`Order ID:`, { align: 'left' });
+        doc.text(`${order._id}`, { align: 'right' });
+
+        doc.text(`Order Date:`, { align: 'left' });
+        doc.text(`${order.createdAt}`, { align: 'right' });
+
+        doc.text(`Delivery Date:`, { align: 'left' });
+        doc.text(`${new Date(order.deliveredAt).toLocaleDateString()}`, { align: 'right' });
+
+        doc.text(`Order Total:`, { align: 'left' });
+        doc.text(`₱${order.totalPrice.toFixed(2)}`, { align: 'right' });
+
+        doc.moveDown();
+
+        doc.fontSize(15).text('----------------------------------------------------', { align: 'center' });
+        doc.fontSize(14).text('Customer Information:', { align: 'center' });
+        try {
+            const user = await User.findById(order.user);
+            if (user) {
+                doc.fontSize(12).text(`Name:`, { align: 'left' });
+                doc.text(`${user.name}`, { align: 'right' });
+
+                doc.text(`Email:`, { align: 'left' });
+                doc.text(`${user.email}`, { align: 'right' });
+            } else {
+                doc.text('Customer information not available');
+            }
+        } catch (error) {
+            doc.text('Error fetching customer information');
+        }
+
+        const addressText = `Address: ${order.shippingInfo.address}, ${order.shippingInfo.city}, ${order.shippingInfo.postalCode}, ${order.shippingInfo.country}`;
+        doc.text(addressText, { align: 'center' });
+        doc.fontSize(15).text('----------------------------------------------------', { align: 'center' });
+        doc.moveDown();
+
+        doc.fontSize(16).text('Thank you for choosing JSON Brews! Always at your service.', { align: 'center' });
+
+
+        const buffers = [];
+        doc.on('data', buffers.push.bind(buffers));
+        doc.on('end', () => {
+            const pdfBuffer = Buffer.concat(buffers);
+            resolve(pdfBuffer.toString('base64'));
+        });
+
+        doc.end();
+    });
+}
 
 async function updateStock(id, quantity) {
     const product = await Product.findById(id);

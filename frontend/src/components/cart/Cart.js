@@ -13,12 +13,14 @@ const Cart = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     // const { cartItems } = useSelector(state => state.cart)
-    const cartItems = JSON.parse(localStorage.getItem('cartItems'));
+    const [cartItems, setCartItems] = useState(
+        JSON.parse(localStorage.getItem('cartItems')) || []
+    );
     const isAuthenticated = localStorage.getItem('user')
     const [product, setProduct] = useState({})
     const [quantity1, setQuantity] = useState(0)
-    console.log(user._id)
-    console.log(cartItems.userId);
+    // console.log(user._id)
+    // console.log(cartItems.userId);
 
     const [state, setState] = useState({
         cartItems: localStorage.getItem('cartItems')

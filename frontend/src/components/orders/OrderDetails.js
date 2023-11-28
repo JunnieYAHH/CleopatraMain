@@ -6,14 +6,32 @@ import Loader from '../layouts/Loader'
 import axios from 'axios'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+// import html2canvas from 'html2canvas'
+// import jsPDF from 'jspdf';
 
 const OrderDetails = () => {
+
+
+
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState('')
     const [order, setOrder] = useState({})
 
     const { shippingInfo, orderItems, paymentInfo, user, totalPrice, orderStatus } = order
     let { id } = useParams();
+
+    // const downloadPDF = () => {
+    //     const capture = document.querySelector('.col-12.col-lg-8.mt-5.order-details');
+
+    //     html2canvas(capture).then((canvas) => {
+    //         const imgData = canvas.toDataURL('image/png');
+    //         const pdf = new jsPDF('p', 'mm', 'a4');
+    //         const imgWidth = 210;
+    //         const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    //         pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+    //         pdf.save('Receipt.pdf');
+    //     });
+    // };
 
     const getOrderDetails = async (id) => {
         try {
@@ -26,7 +44,7 @@ const OrderDetails = () => {
                 }
             }
 
-            
+
             const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/order/${id}`, config)
             setOrder(data.order)
             setLoading(false)
@@ -104,6 +122,11 @@ const OrderDetails = () => {
                                         </div>
                                     </div>
                                 ))}
+                               
+                                    {/* <button className="btn btn-success" onClick={downloadPDF}>
+                                        Download PDF
+                                    </button> */}
+
                             </div>
                             <hr />
                         </div>
